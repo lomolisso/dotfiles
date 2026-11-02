@@ -12,6 +12,21 @@ DOTFILES=$HOME/dotfiles
 
 say() { printf '\n\033[1;31m==>\033[0m \033[1m%s\033[0m\n' "$*"; }
 die() { printf '\nSTOP: %s\n' "$*" >&2; exit 1; }
+
+# The system itself. These come straight from pacman, which keeps them updated;
+# metapac only handles general software (home/dot_config/metapac/groups). The GPU
+# driver, CPU microcode and bootloader are per machine: archinstall or machines/.
+system_packages=(
+  base base-devel linux linux-firmware mkinitcpio sudo
+  sof-firmware            # sound firmware
+  dosfstools              # FAT tools for the EFI partition
+  zram-generator          # compressed swap in RAM
+  networkmanager wpa_supplicant ufw
+  bluez bluez-utils
+  seatd greetd greetd-tuigreet
+  git chezmoi jq rustup   # for the rest of this script
+)
+
 warnings=()
 warn() { warnings+=("$*"); printf 'WARNING: %s\n' "$*" >&2; }
 
@@ -39,7 +54,7 @@ trap 'kill "$keepalive" 2>/dev/null || true' EXIT
 # rustup goes first: AUR builds below then use it instead of pulling in `rust`,
 # which conflicts with it.
 say "Updating the system and installing the basics"
-sudo pacman -Syu --needed --noconfirm base-devel git chezmoi jq rustup
+sudo pacman -Syu --needed --noconfirm "${system_packages[@]}"
 rustup default stable
 rustup component add rust-analyzer
 
@@ -69,15 +84,17 @@ if ! command -v paru >/dev/null; then
   rm -rf "$tmp"
 fi
 command -v metapac >/dev/null || paru -S --needed --noconfirm metapac
-metapac sync --no-confirm   # also enables services, through the groups' hooks
+metapac sync --no-confirm
 
 say "System settings"
 sudo install -Dm644 "$DOTFILES/system/greetd/config.toml" /etc/greetd/config.toml
 sudo install -Dm644 "$DOTFILES/system/zram-generator.conf" /etc/systemd/zram-generator.conf
+sudo usermod -aG seat "$USER"
+sudo systemctl enable --now NetworkManager.service ufw.service bluetooth.service
+sudo systemctl enable seatd.service greetd.service fstrim.timer systemd-timesyncd.service
+systemctl --user enable mpd.service
 # Firewall on from the next boot: blocks incoming, allows outgoing (ufw's defaults).
 sudo sed -i 's/^ENABLED=.*/ENABLED=yes/' /etc/ufw/ufw.conf
-sudo usermod -aG seat "$USER"
-sudo systemctl enable fstrim.timer systemd-timesyncd.service
 
 say "Generating colors"
 matugen image "$HOME/Pictures/wallpapers/shin.jpg" --source-color-index 0 -t scheme-fidelity

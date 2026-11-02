@@ -1,7 +1,7 @@
 # dotfiles
 
 Arch + niri, themed "shin": OLED black, greys and wine red, from the wallpaper.
-Configs: [chezmoi](https://www.chezmoi.io/). Packages: [metapac](https://github.com/ripytide/metapac).
+Configs: [chezmoi](https://www.chezmoi.io/). General software: [metapac](https://github.com/ripytide/metapac).
 
 These dotfiles are machine-agnostic. Anything tied to one computer lives in `machines/`.
 
@@ -14,10 +14,10 @@ These dotfiles are machine-agnostic. Anything tied to one computer lives in `mac
    curl -fsSL https://raw.githubusercontent.com/lomolisso/dotfiles/main/install.sh | bash
    ```
    It asks for your sudo password and Bitwarden email once, then runs unattended: updates
-   the system, sets up Rust, clones this repo to `~/dotfiles`, deploys `home/`, bootstraps
-   paru + metapac, installs every package (services are enabled by metapac hooks), applies
-   the system settings (greetd, zram, firewall), and installs VS Code extensions, LibreWolf
-   add-ons, Claude Code and herdr. Safe to rerun.
+   the system and installs the system packages with pacman, sets up Rust, clones this repo
+   to `~/dotfiles`, deploys `home/`, bootstraps paru + metapac, installs the general software,
+   turns on services and system settings (greetd, zram, firewall), and installs VS Code
+   extensions, LibreWolf add-ons, Claude Code and herdr. Safe to rerun.
 3. Reboot (greetd/tuigreet starts niri).
 
 ### After the first login
@@ -44,8 +44,7 @@ machines/    one folder per computer, each broken into categories with its own i
 
 Not part of the main install. Each `machines/<computer>/install.sh` installs that computer's
 categories (say, GPU driver, monitor, dual boot); `machines/legion` is mine and an example.
-Packages there come straight from pacman, so metapac doesn't track them, and **`metapac clean`
-would uninstall them**, possibly including the boot loader. Don't run it on such a machine.
+Packages there come straight from pacman.
 
 The main config has a few optional spots for machines to fill in, so it never needs to
 know about them:
@@ -75,15 +74,19 @@ Wallpaper `~/Pictures/wallpapers/shin.jpg`; ghostty colors from it via matugen (
 
 ## Packages
 
+System packages come straight from pacman and are listed in `install.sh`: the kernel, firmware,
+services (NetworkManager, ufw, Bluetooth, seatd, greetd) and what the installer itself needs.
+paru and metapac are bootstrapped there too. The GPU driver, CPU microcode and bootloader are
+per machine: archinstall or `machines/`.
+
+metapac only handles general software, in these groups:
+
 | group | |
 |---|---|
-| base | base base-devel linux linux-firmware mkinitcpio dosfstools zram-generator sudo git wget nano vim smartmontools pacman-contrib chezmoi paru metapac |
-| hardware | sof-firmware bluez bluez-utils bluetui |
 | audio | pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber gst-plugin-pipewire libpulse |
-| network | networkmanager wpa_supplicant ufw |
-| niri | niri xorg-xwayland xwayland-satellite xorg-xauth xdg-desktop-portal-gnome xdg-utils qt6-wayland seatd wl-clipboard grim slurp greetd greetd-tuigreet |
+| niri | niri xorg-xwayland xwayland-satellite xorg-xauth xdg-desktop-portal-gnome xdg-utils qt6-wayland wl-clipboard grim slurp |
 | desktop | waybar rofi mako awww swayosd cliphist wl-clip-persist gpu-screen-recorder matugen wttrbar hyprlock hypridle playerctl rbw rofi-rbw wtype libnotify xdg-user-dirs |
-| terminal | ghostty xdg-terminal-exec fish starship helix zellij yazi ffmpeg 7zip jq poppler imagemagick resvg chafa fastfetch btop htop dust eza bat zoxide fd ripgrep fzf atuin tealdeer ouch lazygit wiremix gurk aerc nchat-bin |
+| terminal | ghostty xdg-terminal-exec fish starship helix zellij yazi ffmpeg 7zip jq poppler imagemagick resvg chafa wget nano vim smartmontools pacman-contrib fastfetch btop htop dust eza bat zoxide fd ripgrep fzf atuin tealdeer ouch lazygit bluetui wiremix gurk aerc nchat-bin |
 | media | spotify-player cava mpd rmpc mpv mpv-mpris yt-dlp imv zathura zathura-pdf-mupdf |
 | apps | librewolf vesktop-bin |
 | fonts | noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-dejavu ttf-jetbrains-mono-nerd ttf-ms-fonts |
@@ -133,3 +136,7 @@ chezmoi edit <file> && chezmoi apply   # or edit in place, then: chezmoi re-add
 chezmoi add ~/.config/<app>            # track a new config
 metapac sync                           # after editing a package group
 ```
+
+**Never run `metapac clean`.** It uninstalls every explicitly installed package that isn't in
+its groups, and that's the whole system here: the kernel, the bootloader, the GPU driver.
+`metapac sync` only adds packages, so it's always safe.

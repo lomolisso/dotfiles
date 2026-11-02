@@ -4,7 +4,7 @@
 packages = [
   "spotify-player",
   "cava",
-  { name = "mpd", hooks = { after_sync = ["systemctl", "--user", "enable", "mpd.service"] } },
+  "mpd",
   "rmpc",
   "mpv",
   "mpv-mpris",

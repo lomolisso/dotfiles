@@ -16,8 +16,7 @@ Legion desktop (Intel CPU, NVIDIA GPU, MSI 1440p 240 Hz monitor), dual-booting W
 | `dual-boot` | GRUB menu and theme, `reboot-to-windows`, `bt-windows-keys`, the power menu's Windows entry |
 
 Packages here come straight from pacman, so regular system updates keep them
-current. metapac doesn't track them, so **never run `metapac clean` on this
-computer**: it would uninstall them, including GRUB, the only way to boot Linux here.
+current. See the main README's warning about `metapac clean`.
 
 `grub.cfg` boots Arch and Windows by partition UUID; on a new disk layout, update
 them (`lsblk -f`). The installer stops with a message if they don't match.

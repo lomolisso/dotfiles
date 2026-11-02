@@ -1,4 +1,5 @@
-# Terminal, shell, editor and CLI tools.
+# Terminal, shell, editor and CLI tools. metapac only handles general software like
+# this; the system itself (kernel, services, firmware) is in install.sh.
 
 [arch]
 packages = [
@@ -20,6 +21,13 @@ packages = [
   "resvg",
   "chafa",
 
+  # Basic utilities
+  "wget",
+  "nano",
+  "vim",
+  "smartmontools",
+  "pacman-contrib",  # checkupdates, used by the waybar updates module
+
   # System info / monitoring
   "fastfetch",
   "btop",
@@ -39,6 +47,9 @@ packages = [
 
   # Git
   "lazygit",
+
+  # Bluetooth manager
+  "bluetui",
 
   # Audio mixer
   "wiremix",

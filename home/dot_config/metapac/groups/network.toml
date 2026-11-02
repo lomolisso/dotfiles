@@ -1,8 +1,0 @@
-# Networking and firewall.
-
-[arch]
-packages = [
-  { name = "networkmanager", hooks = { after_sync = ["sudo", "systemctl", "enable", "--now", "NetworkManager.service"] } },
-  "wpa_supplicant",
-  { name = "ufw", hooks = { after_sync = ["sudo", "systemctl", "enable", "--now", "ufw.service"] } },
-]
