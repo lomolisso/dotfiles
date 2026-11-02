@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# rofi script mode: the app launcher, with a Nerd Font character for each app
+# instead of its real icon. Opened by Super+Space (`rofi -show apps`).
+# rofi runs this with no selection to get the list, then again with the
+# picked entry's .desktop path in $ROFI_INFO.
+
+if [[ -n ${ROFI_INFO:-} ]]; then
+  # gio honors Terminal=true through xdg-terminal-exec (ghostty).
+  setsid -f gio launch "$ROFI_INFO" >/dev/null 2>&1
+  exit 0
+fi
+
+# Same icon set as waybar's window label; unknown apps get the generic icon.
+declare -A ICON=(
+  [com.mitchellh.ghostty]=$'\U000f165d'      # ghost
+  [firefox]=$'\U000f0239'                    # firefox
+  [librewolf]=$'\U000f0239'                  # firefox (LibreWolf is a fork)
+  [vesktop]=$'\U000f066f'                    # discord
+  [org.gnome.Nautilus]=$'\U000f0256'         # folder
+  [yazi]=$'\U000f0dcf'                       # open folder
+  [mpv]=$'\U000f040d'                        # play
+  [org.pwmt.zathura]=$'\U000f0226'           # pdf
+  [imv]=$'\U000f0976'                        # image
+  [aerc]=$'\U000f01f0'                       # mail
+  [btop]=$'\U000f029a'                       # gauge
+  [htop]=$'\U000f0128'                       # bar chart
+  [Helix]=$'\U000f0dc9'                      # document edit
+  [com.microsoft.VSCode]=$'\U000f0a1e'        # vs code
+  [vim]=$'\U0000e62b'                        # vim
+  [rmpc]=$'\U000f075a'                       # music
+  [spotify-player]=$'\U000f04c7'             # spotify
+  [wiremix]=$'\U000f057e'                    # volume
+  [zellij]=$'\U000f0bcc'                     # split panes
+  [rofi]=$'\U000f14df'                       # rocket
+  [rofi-theme-selector]=$'\U000f0e0c'        # palette
+  # Developer logos (devicon, bundled in Nerd Fonts as nf-dev-*)
+  [cmake-gui]=$'\U0000e794'                  # cmake
+  # Everything else by what it does
+  [qv4l2]=$'\U000f05a0'                      # webcam
+  [qvidcap]=$'\U000f0bdc'                    # video
+  [xgps]=$'\U000f01a4'                       # gps crosshairs
+  [xgpsspeed]=$'\U000f04c5'                  # speedometer
+)
+GENERIC=$'\U000f0614'
+
+printf '\0prompt\x1f\U000f08c7 Apps\n'
+printf '\0no-custom\x1ftrue\n'
+
+# Desktop entries from user then system dirs; the first file with a given id wins.
+IFS=: read -ra dirs <<< "${XDG_DATA_HOME:-$HOME/.local/share}:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+files=()
+for d in "${dirs[@]}"; do
+  [[ -d $d/applications ]] && files+=("$d"/applications/*.desktop)
+done
+((${#files[@]})) || exit 0
+
+awk -F= '
+  FNR == 1 {
+    if (prev != "") emit()
+    prev = FILENAME; sec = ""; name = ""; kw = ""; hide = 0; app = 0
+  }
+  /^\[/ { sec = $0; next }
+  sec != "[Desktop Entry]" { next }
+  $1 == "Name" && name == "" { name = substr($0, 6) }
+  $1 == "Keywords" { kw = substr($0, 10); gsub(/;/, " ", kw) }
+  ($1 == "NoDisplay" || $1 == "Hidden") && $2 == "true" { hide = 1 }
+  $1 == "Type" && $2 == "Application" { app = 1 }
+  function emit(  id) {
+    id = prev; sub(/.*\//, "", id); sub(/\.desktop$/, "", id)
+    if (app && !hide && name != "" && !(id in seen)) { seen[id] = 1; print name "\t" id "\t" prev "\t" id " " kw }
+  }
+  END { if (prev != "") emit() }
+' "${files[@]}" | sort -f | while IFS=$'\t' read -r name id path meta; do
+  # meta: hidden search terms, so "vscode" finds Visual Studio Code.
+  printf '%s  %s\0info\x1f%s\x1fmeta\x1f%s\n' "${ICON[$id]:-$GENERIC}" "$name" "$path" "$meta"
+done

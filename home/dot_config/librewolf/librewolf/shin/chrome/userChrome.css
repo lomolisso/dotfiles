@@ -1,0 +1,146 @@
+/* shin for LibreWolf's frame: a terminal look to go with ghostty, zellij and waybar.
+   Colors come from the theme API (../extensions/shin@local/background.js); this
+   sets the font, squares the corners, numbers the tabs like zellij's tab bar
+   (Alt+1..9 picks them) and turns the address bar into a prompt. Needs
+   toolkit.legacyUserProfileCustomizations.stylesheets (../user.js). */
+
+:root {
+  --shin-bg: #000000;
+  --shin-bg-alt: #1e1e1e;
+  --shin-surface: #2a2a2a;
+  --shin-line: #393939;
+  --shin-fg: #e9e9e9;
+  --shin-fg-dim: #cfcfcf;
+  --shin-muted: #989898;
+  --shin-faint: #5c5c5c;
+  --shin-wine: #8c1625;
+  --shin-wine-bright: #cb4d66;
+
+  --tab-border-radius: 0px !important;
+  --tab-block-margin: 0px !important;
+  --tab-selected-shadow: none !important;
+  --toolbarbutton-border-radius: 2px !important;
+  --arrowpanel-border-radius: 5px !important;
+  --panel-border-radius: 5px !important;
+}
+
+/* JetBrains Mono everywhere in the frame, bold like waybar where it's text-only. */
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace !important;
+}
+
+/* --- tabs --- */
+
+#tabbrowser-tabs {
+  counter-reset: tab;
+}
+
+.tabbrowser-tab {
+  counter-increment: tab;
+  padding-inline: 0 !important;
+}
+
+.tab-background {
+  margin-block: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.tabbrowser-tab:hover:not([selected]) .tab-background {
+  background: var(--shin-bg-alt) !important;
+}
+
+.tab-label {
+  font-weight: 700 !important;
+}
+
+.tabbrowser-tab:not([selected]):hover .tab-label {
+  color: var(--shin-fg) !important;
+}
+
+/* "1 title": the number in wine, white on the selected tab. Pinned tabs keep just
+   their icon but still count, so the numbers match Alt+N. */
+.tabbrowser-tab:not([pinned]) .tab-content::before {
+  content: counter(tab);
+  margin-inline-end: 1ch;
+  color: var(--shin-wine-bright);
+  font-weight: 700;
+}
+
+.tabbrowser-tab[selected] .tab-content::before {
+  color: var(--shin-fg);
+}
+
+/* Close buttons only on the tab under the mouse (middle click and Ctrl+W still work). */
+.tabbrowser-tab:not(:hover) .tab-close-button {
+  display: none !important;
+}
+
+#firefox-view-button {
+  display: none !important;
+}
+
+/* The tab strip is the title bar (user.js), but niri needs no window buttons. */
+.titlebar-buttonbox-container {
+  display: none !important;
+}
+
+/* --- address bar: a prompt --- */
+
+#urlbar-background,
+.urlbar-background {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+#urlbar[focused] #urlbar-background,
+#urlbar[focused] .urlbar-background {
+  outline: 1px solid var(--shin-wine) !important;
+  outline-offset: -1px !important;
+}
+
+#urlbar-input-container::before {
+  content: "❯";
+  align-self: center;
+  padding-inline: 6px 2px;
+  color: var(--shin-wine-bright);
+  font-weight: 700;
+}
+
+#urlbar-input {
+  caret-color: var(--shin-wine-bright);
+}
+
+/* --- menus, panels, the link preview and find bar --- */
+
+menupopup,
+panel {
+  --menu-background-color: var(--shin-bg) !important;
+  --menu-color: var(--shin-fg) !important;
+  --menu-border-color: var(--shin-wine) !important;
+  --menu-disabled-color: var(--shin-faint) !important;
+  --menuitem-hover-background-color: var(--shin-wine) !important;
+  --panel-background: var(--shin-bg) !important;
+  --panel-color: var(--shin-fg) !important;
+  --panel-border-color: var(--shin-wine) !important;
+  --panel-separator-color: var(--shin-line) !important;
+  --panel-item-hover-bgcolor: var(--shin-wine) !important;
+  --arrowpanel-background: var(--shin-bg) !important;
+  --arrowpanel-color: var(--shin-fg) !important;
+  --arrowpanel-border-color: var(--shin-wine) !important;
+  --arrowpanel-dimmed: var(--shin-bg-alt) !important;
+}
+
+#statuspanel-label {
+  border: 1px solid var(--shin-wine) !important;
+  border-radius: 2px !important;
+  background: var(--shin-bg) !important;
+  color: var(--shin-fg-dim) !important;
+}
+
+findbar {
+  border-top: 1px solid var(--shin-wine) !important;
+  background: var(--shin-bg) !important;
+}

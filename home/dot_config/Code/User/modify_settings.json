@@ -1,0 +1,17 @@
+#!/bin/sh
+# chezmoi modify script for VS Code's settings.json: picks the Shin and icon themes, the
+# font and no window buttons (niri has none), and keeps every other setting, since
+# VS Code writes this file itself. A file jq can't read (VS Code allows comments)
+# is left as it is.
+in=$(cat)
+[ -n "$in" ] || in='{}'
+if out=$(printf '%s' "$in" | jq --indent 4 '
+  .["workbench.colorTheme"] = "Shin"
+  | .["editor.fontFamily"] = "'"'"'JetBrainsMono Nerd Font'"'"', monospace"
+  | .["terminal.integrated.fontFamily"] = "'"'"'JetBrainsMono Nerd Font'"'"'"
+  | .["workbench.iconTheme"] = "material-icon-theme"
+  | .["window.controlsStyle"] = "hidden"' 2>/dev/null); then
+  printf '%s\n' "$out"
+else
+  printf '%s' "$in"
+fi

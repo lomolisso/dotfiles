@@ -1,0 +1,27 @@
+# Compositor and session plumbing, based on archinstall's niri profile.
+# The profile's design-choice packages (alacritty, fuzzel, mako, waybar,
+# swaybg, swayidle, swaylock) and its greeter are left out; our picks are in
+# desktop.toml, and greetd below.
+
+[arch]
+packages = [
+  "niri",
+  "xorg-xwayland",
+  "xwayland-satellite",
+  "xorg-xauth", # ssh -X (ForwardX11) needs it to hand remote apps a display
+  "xdg-desktop-portal-gnome",
+  "xdg-utils",
+  "qt6-wayland",
+
+  # Seat access (archinstall's seatd option)
+  { name = "seatd", hooks = { after_sync = ["sudo", "systemctl", "enable", "seatd.service"] } },
+
+  # Wayland utilities
+  "wl-clipboard",
+  "grim",
+  "slurp",
+
+  # Login greeter (config in system/greetd, installed by install.sh)
+  { name = "greetd", hooks = { after_sync = ["sudo", "systemctl", "enable", "greetd.service"] } },
+  "greetd-tuigreet",
+]

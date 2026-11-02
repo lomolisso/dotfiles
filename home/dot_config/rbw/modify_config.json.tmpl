@@ -1,0 +1,12 @@
+#!/bin/sh
+# chezmoi modify script for rbw's config.json: sets the prompt, lock timeout and
+# account email, and keeps everything rbw writes itself (e.g. device_id, which
+# Bitwarden uses to recognize this machine). The email comes from chezmoi's own
+# data (asked once by `chezmoi init`), not from this repo.
+exec jq -n \
+  --arg email {{ index . "bitwarden_email" | default "" | quote }} \
+  --arg pinentry {{ printf "%s/.local/bin/rofi-pinentry" .chezmoi.homeDir | quote }} '
+  ((try input catch {}) // {})
+  | .pinentry = $pinentry
+  | .lock_timeout = 3600
+  | if $email != "" then .email = $email else . end'

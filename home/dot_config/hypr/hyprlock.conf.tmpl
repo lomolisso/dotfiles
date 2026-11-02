@@ -1,0 +1,61 @@
+# Lock screen: blurred wallpaper, clock and a labelled password box.
+
+general {
+    hide_cursor = true
+    # Pressing Enter on an empty box (e.g. while waking the screen) doesn't
+    # count as a failed attempt, so it can't trip the 3-strike faillock.
+    ignore_empty_input = true
+}
+
+background {
+    monitor =
+    path = {{ .chezmoi.homeDir }}/Pictures/wallpapers/shin.jpg
+    blur_passes = 3
+    blur_size = 6
+    brightness = 0.45
+}
+
+# Clock
+label {
+    monitor =
+    text = $TIME
+    font_family = JetBrainsMono Nerd Font
+    font_size = 96
+    color = rgba(255, 255, 255, 0.95)
+    position = 0, 220
+    halign = center
+    valign = center
+}
+
+# Date
+label {
+    monitor =
+    text = cmd[update:60000] date +"%A, %d %B"
+    font_family = JetBrainsMono Nerd Font
+    font_size = 20
+    color = rgba(255, 255, 255, 0.75)
+    position = 0, 130
+    halign = center
+    valign = center
+}
+
+input-field {
+    monitor =
+    size = 420, 56
+    rounding = 6
+    outline_thickness = 2
+    outer_color = rgba(255, 255, 255, 0.35)
+    inner_color = rgba(0, 0, 0, 0.55)
+    font_color = rgb(255, 255, 255)
+    font_family = JetBrainsMono Nerd Font
+    check_color = rgb(230, 230, 230)
+    fail_color = rgb(200, 30, 40)
+    placeholder_text = Type your password, then press Enter
+    fail_text = $FAIL ($ATTEMPTS)
+    dots_size = 0.25
+    dots_spacing = 0.3
+    fade_on_empty = false
+    position = 0, -40
+    halign = center
+    valign = center
+}

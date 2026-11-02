@@ -1,0 +1,18 @@
+{
+  "name": "shin-theme",
+  "displayName": "Shin",
+  "description": "shin: black, greys, white and wine red, like helix, ghostty, waybar and rofi.",
+  "version": "1.0.0",
+  "publisher": "shin",
+  "engines": { "vscode": "^1.70.0" },
+  "categories": ["Themes"],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Shin",
+        "uiTheme": "vs-dark",
+        "path": "./themes/shin-color-theme.json"
+      }
+    ]
+  }
+}

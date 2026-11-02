@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# Makes app-requested maximize and fullscreen use the full-width column layout
+# (niri's maximize-column: outer gaps and the wine border kept) instead of
+# niri's edge-to-edge states. niri has no setting for this, so this watches its
+# event stream and converts the state as soon as a window reaches it.
+#   - maximize request (e.g. title-bar double-click) -> niri "maximize to edges"
+#     -> undone, column maximized instead. Asking again restores the width.
+#   - fullscreen request (F11, mpv f) -> real fullscreen -> undone, windowed
+#     fullscreen (the app still thinks it is fullscreen) + column maximized.
+# States are recognized by size: fullscreen covers the whole output, maximize
+# to edges covers its full width (below waybar). Started by niri (spawn-at-startup).
+set -uo pipefail
+
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/maximize-watch.lock"
+flock -n 9 || exit 0   # one instance per session
+
+config=${XDG_CONFIG_HOME:-$HOME/.config}/niri/config.kdl
+gap=$(awk '/^layout \{/ { l = 1 } l && $1 == "gaps" { print int($2); exit }' "$config")
+gap=${gap:-0}
+
+declare -a out_w out_h
+load_outputs() {
+  out_w=(); out_h=()
+  while read -r w h; do out_w+=("$w"); out_h+=("$h"); done < <(
+    niri msg --json outputs | jq -r '.[] | select(.logical) | "\(.logical.width) \(.logical.height)"')
+}
+load_outputs
+
+declare -A last_w busy
+
+niri msg --json event-stream | jq --unbuffered -r '
+  if .WorkspacesChanged then "outputs"
+  elif .WindowLayoutsChanged then
+    .WindowLayoutsChanged.changes[] | "\(.[0]) \(.[1].tile_size[0] | floor) \(.[1].tile_size[1] | floor)"
+  else empty end' |
+while read -r id w h; do
+  [[ $id == outputs ]] && { load_outputs; continue; }
+
+  state=normal ow=0
+  for i in "${!out_w[@]}"; do
+    if (( w == out_w[i] )); then
+      ow=${out_w[i]}
+      if (( h >= out_h[i] )); then state=fullscreen; else state=edges; fi
+      break
+    fi
+  done
+
+  if [[ $state == normal ]]; then
+    unset 'busy[$id]'
+    last_w[$id]=$w
+    continue
+  fi
+  [[ -n ${busy[$id]:-} ]] && continue   # already handled this request
+  busy[$id]=1
+  # Without waybar's reserved space, maximize to edges is output-sized too and
+  # can't be told apart from fullscreen: leave the window alone.
+  pgrep -x waybar >/dev/null || continue
+
+  full=$(( ow - 2 * gap ))   # width of a maximized column
+  was_full=0
+  (( ${last_w[$id]:-0} >= full - 1 )) && was_full=1
+
+  if [[ $state == fullscreen ]]; then
+    niri msg action fullscreen-window --id "$id"
+    niri msg action toggle-windowed-fullscreen --id "$id"
+    niri msg action focus-window --id "$id"
+    (( was_full )) || niri msg action maximize-column
+  else
+    niri msg action maximize-window-to-edges --id "$id"
+    niri msg action focus-window --id "$id"
+    niri msg action maximize-column   # un-maximizes when it already was full width
+  fi
+done

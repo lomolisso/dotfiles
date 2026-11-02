@@ -1,0 +1,31 @@
+# wiremix: only the theme is set; this file is merged with wiremix's defaults.
+# shin palette: dark wine #8c1625 for borders and markers, bright wine #cb4d66
+# for the selection, volume bars and live meters, greys for empty parts.
+theme = "shin"
+
+[themes.shin]
+selector = { fg = "#cb4d66" }
+tab = { fg = "#989898" }
+tab_selected = { fg = "#e9e9e9", add_modifier = "BOLD" }
+tab_marker = { fg = "#8c1625" }
+list_more = { fg = "#5c5c5c" }
+node_title = { fg = "#e9e9e9" }
+node_target = { fg = "#989898" }
+volume = { fg = "#cfcfcf" }
+volume_empty = { fg = "#393939" }
+volume_filled = { fg = "#cb4d66" }
+meter_inactive = { fg = "#393939" }
+meter_active = { fg = "#8c1625" }
+meter_overload = { fg = "#d5909e", add_modifier = "BOLD" }
+meter_center_inactive = { fg = "#393939" }
+meter_center_active = { fg = "#cb4d66" }
+config_device = { fg = "#e9e9e9" }
+config_profile = { fg = "#cfcfcf" }
+dropdown_icon = { fg = "#8c1625" }
+dropdown_border = { fg = "#8c1625" }
+dropdown_item = { fg = "#cfcfcf" }
+dropdown_selected = { fg = "#e9e9e9", bg = "#8c1625", add_modifier = "BOLD" }
+dropdown_more = { fg = "#5c5c5c" }
+help_border = { fg = "#8c1625" }
+help_item = { fg = "#cfcfcf" }
+help_more = { fg = "#5c5c5c" }

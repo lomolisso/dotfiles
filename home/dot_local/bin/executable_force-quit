@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Force-quits the focused app (SIGKILL), for apps that are frozen or ignore
+# Super+Q. Bound to Super+Shift+Q in niri.
+# ghostty runs every terminal window in one process, so killing it would close
+# all terminals; for ghostty this only closes the focused window instead.
+set -euo pipefail
+
+win=$(niri msg --json focused-window)
+pid=$(jq -r '.pid // empty' <<< "$win")
+app=$(jq -r '.app_id // "app"' <<< "$win")
+[[ -n $pid ]] || exit 0
+
+if [[ $app == com.mitchellh.ghostty ]]; then
+  niri msg action close-window
+  exit 0
+fi
+
+kill -KILL "$pid" && notify-send -a "Force quit" -t 2000 "Force-quit $app"

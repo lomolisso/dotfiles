@@ -1,0 +1,18 @@
+# Regenerate the generated colors (only ghostty's theme) from the wallpaper with:
+#   matugen image ~/Pictures/wallpapers/shin.jpg --source-color-index 0 -t scheme-fidelity
+# scheme-fidelity keeps the wallpaper's own wine (#750017) instead of muting it;
+# templates turn the red-tinted grays into true grays with `| grayscale`.
+
+# Material schemes have no green/yellow/blue/cyan/magenta, which terminals need.
+# These standard hues are blended toward the wallpaper's color, and the
+# templates set their saturation and lightness (see templates/ghostty).
+[config.custom_colors]
+green   = { color = "#3fb950", blend = true }
+yellow  = { color = "#d29922", blend = true }
+blue    = { color = "#58a6ff", blend = true }
+magenta = { color = "#bc8cff", blend = true }
+cyan    = { color = "#39c5cf", blend = true }
+
+[templates.ghostty]
+input_path = '~/.config/matugen/templates/ghostty'
+output_path = '~/.config/ghostty/themes/matugen'

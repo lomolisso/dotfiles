@@ -1,0 +1,8 @@
+# Only overrides; everything else uses atuin's defaults.
+
+# Enter runs the selected command (Tab puts it on the command line to edit).
+enter_accept = true
+
+# atuin comes from pacman, so updates arrive with `paru -Syu`; don't nag about
+# GitHub releases in the history search header.
+update_check = false

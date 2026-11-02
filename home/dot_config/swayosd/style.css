@@ -1,0 +1,48 @@
+/* swayosd volume/brightness popup, shin palette (matches waybar/rofi):
+   #000000 background, 1px #8c1625 border, 5px corners, bright wine progress. */
+
+window#osd {
+  border-radius: 5px;
+  border: 1px solid #8c1625;
+  background: #000000;
+}
+window#osd #container {
+  margin: 16px;
+}
+window#osd image,
+window#osd label {
+  color: #e9e9e9;
+  font-family: "JetBrainsMono Nerd Font";
+  font-weight: 700;
+}
+window#osd progressbar:disabled,
+window#osd image:disabled {
+  opacity: 0.5;
+}
+window#osd progressbar,
+window#osd segmentedprogress {
+  min-height: 6px;
+  border-radius: 2px;
+  background: transparent;
+  border: none;
+}
+window#osd trough,
+window#osd segment {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: #393939;
+}
+window#osd progress,
+window#osd segment.active {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: #cb4d66;
+}
+window#osd segment {
+  margin-left: 8px;
+}
+window#osd segment:first-child {
+  margin-left: 0;
+}

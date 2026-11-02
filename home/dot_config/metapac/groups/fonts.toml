@@ -1,0 +1,14 @@
+# Base fonts.
+
+[arch]
+packages = [
+  "noto-fonts",
+  "noto-fonts-emoji",
+  "noto-fonts-cjk",  # Chinese/Japanese/Korean, e.g. the kanji workspace numbers in waybar
+  "ttf-dejavu",
+  "ttf-jetbrains-mono-nerd",
+
+  # AUR: Microsoft's core fonts (Arial, Times New Roman...), which some documents
+  # and slide templates ask for by name
+  "ttf-ms-fonts",
+]

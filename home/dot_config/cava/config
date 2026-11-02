@@ -1,0 +1,15 @@
+; cava: only the colors differ from cava's defaults (see `man cava` or the
+; commented example cava writes on first run for every other option).
+; Bars rise through the shin wine ramp: dark wine at the bottom, rose at the top.
+; The background stays the terminal's (ghostty's #000000).
+
+[color]
+gradient = 1
+gradient_color_1 = '#750017'
+gradient_color_2 = '#8c1625'
+gradient_color_3 = '#9a2337'
+gradient_color_4 = '#a8304a'
+gradient_color_5 = '#b93e57'
+gradient_color_6 = '#cb4d66'
+gradient_color_7 = '#d06f82'
+gradient_color_8 = '#d5909e'

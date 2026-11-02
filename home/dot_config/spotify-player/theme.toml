@@ -1,0 +1,40 @@
+# spotify-player theme in the shin palette: dark wine #8c1625 for borders (titles
+# on them white), bright wine #cb4d66 for the playing track, selection and progress,
+# greys and white for text. No background: the terminal's #000000 shows through.
+[[themes]]
+name = "shin"
+
+[themes.palette]
+foreground = "#e9e9e9"
+black = "#393939"
+red = "#cb4d66"
+green = "#a2ff33"
+yellow = "#ffb31a"
+blue = "#668aff"
+magenta = "#d95cff"
+cyan = "#1aceff"
+white = "#cfcfcf"
+bright_black = "#989898"
+bright_red = "#d5909e"
+bright_white = "#e9e9e9"
+
+[themes.component_style]
+block_title = { fg = "#e9e9e9", modifiers = ["Bold"] }
+border = { fg = "#8c1625" }
+playback_status = { fg = "#cb4d66", modifiers = ["Bold"] }
+playback_track = { fg = "#e9e9e9", modifiers = ["Bold"] }
+playback_artists = { fg = "#cb4d66", modifiers = ["Bold"] }
+playback_album = { fg = "#cfcfcf" }
+playback_genres = { fg = "#989898", modifiers = ["Italic"] }
+playback_metadata = { fg = "#989898" }
+playback_progress_bar = { fg = "#cb4d66", bg = "#2a2a2a", modifiers = ["Bold"] }
+playback_progress_bar_unfilled = { fg = "#393939" }
+current_playing = { fg = "#cb4d66", modifiers = ["Bold"] }
+page_desc = { fg = "#cb4d66", modifiers = ["Bold"] }
+playlist_desc = { fg = "#989898", modifiers = ["Dim"] }
+table_header = { fg = "#8c1625", modifiers = ["Bold"] }
+selection = { fg = "#e9e9e9", bg = "#8c1625", modifiers = ["Bold"] }
+like = { fg = "#cb4d66", modifiers = ["Bold"] }
+lyrics_played = { fg = "#5c5c5c" }
+lyrics_playing = { fg = "#cb4d66", modifiers = ["Bold"] }
+visualization = { low = "#750017", mid = "#8c1625", high = "#cb4d66" }

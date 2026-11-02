@@ -1,0 +1,26 @@
+# Only overrides of helix's built-in language settings. Servers come from the dev
+# metapac group; `hx --health <language>` shows which ones helix finds.
+
+# Grammar (harper) for notes, besides marksman's links and headings; its spell
+# check is off (`harper-cli config` lists every rule harper can turn on or off).
+# Long lines wrap on screen, so a paragraph can stay one line in the file.
+[language-server.harper-ls]
+command = "harper-ls"
+args = ["--stdio"]
+
+[language-server.harper-ls.config.harper-ls.linters]
+SpellCheck = false
+
+[[language]]
+name = "markdown"
+language-servers = ["marksman", "harper-ls"]
+soft-wrap.enable = true
+
+# SystemVerilog/Verilog: Verible (lint, format, go to definition) instead of
+# helix's default svlangserver, which is unmaintained.
+[language-server.verible]
+command = "verible-verilog-ls"
+
+[[language]]
+name = "verilog"
+language-servers = ["verible"]

@@ -1,0 +1,52 @@
+# Terminal, shell, editor and CLI tools.
+
+[arch]
+packages = [
+  "ghostty",
+  "xdg-terminal-exec",
+  "fish",
+  "starship",
+  "helix",
+  "zellij",
+  "yazi",
+
+  # yazi previews: video thumbnails, archives, JSON, PDFs, images, SVGs,
+  # and chafa as the image fallback for terminals without a graphics protocol
+  "ffmpeg",
+  "7zip",
+  "jq",
+  "poppler",
+  "imagemagick",
+  "resvg",
+  "chafa",
+
+  # System info / monitoring
+  "fastfetch",
+  "btop",
+  "htop",
+  "dust",
+
+  # Modern CLI tools, run by name (nothing aliases ls or cat to them)
+  "eza",
+  "bat",
+  "zoxide",
+  "fd",
+  "ripgrep",
+  "fzf",
+  "atuin",
+  "tealdeer",
+  "ouch",
+
+  # Git
+  "lazygit",
+
+  # Audio mixer
+  "wiremix",
+
+  # Chat and mail
+  "gurk",
+  "aerc",
+
+  # AUR. Prebuilt: compiling nchat takes more memory than many machines have.
+  "nchat-bin",
+]

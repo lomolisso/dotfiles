@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+# Keeps Bluetooth devices working in both Arch and Windows without re-pairing.
+# A device keeps one key per computer, and both OSes share this computer's
+# Bluetooth address, so each pairing invalidates the key the other OS holds.
+#
+# Windows owns the key: pair in Windows, and bt-windows-keys.service runs this
+# before bluetoothd on the next Arch boot, copying the new key into BlueZ. Windows
+# is only ever read, through a read-only loop device.
+#
+# A key is copied only when Windows' key changed since the last run. Windows may
+# hold an old key because the device was last paired in Arch, and copying that
+# one would break Arch too. The first run only records what Windows has.
+#
+# Usage: bt-windows-keys [--dry-run]    (as root; --dry-run changes nothing)
+# To import by hand, restart Bluetooth, which runs this first:
+#   sudo systemctl restart bluetooth
+set -euo pipefail
+umask 077
+
+part=/dev/disk/by-label/Windows
+bluez=/var/lib/bluetooth
+state=/var/lib/bt-windows-keys
+
+work=
+loop=
+win=
+
+fail() {
+  echo "bt-windows-keys: $*" >&2
+  exit 1
+}
+
+cleanup() {
+  if [[ -n $work ]]; then
+    mountpoint -q "$work/mnt" && umount "$work/mnt"
+    [[ -n $loop ]] && losetup -d "$loop"
+    rm -rf "$work"
+  fi
+}
+
+# Sets $win to the root of the Windows filesystem.
+mount_windows() {
+  local i
+  for i in {1..50}; do
+    [[ -e $part ]] && break
+    sleep 0.1
+  done
+  [[ -e $part ]] || fail "$part not found"
+  mkdir "$work/mnt"
+  loop=$(losetup --read-only --find --show "$part")
+  mount -t ntfs3 -o ro,noatime "$loop" "$work/mnt" || fail "couldn't mount $part"
+  win=$work/mnt
+}
+
+bluetooth_running() { systemctl -q is-active bluetooth.service; }
+
+# Prints "adapter device KEY" for each classic Bluetooth pairing in a SYSTEM hive.
+# Other values (CentralIRK) and LE devices (subkeys of the adapter) don't match.
+read_keys() {
+  perl -MWin::Hivex -e '
+    my $h = Win::Hivex->open($ARGV[0]);
+    my $select = $h->node_get_child($h->root, "Select") or die "no Select key\n";
+    my $current = $h->value_dword($h->node_get_value($select, "Current"));
+    my $n = $h->root;
+    for (sprintf("ControlSet%03d", $current), qw(Services BTHPORT Parameters Keys)) {
+      $n = $h->node_get_child($n, $_) or exit 0;
+    }
+    for my $adapter ($h->node_children($n)) {
+      for my $v ($h->node_values($adapter)) {
+        my $device = $h->value_key($v);
+        my (undef, $key) = $h->value_value($v);
+        next unless $device =~ /^[0-9a-f]{12}$/i && length($key) == 16;
+        printf "%s %s %s\n", lc $h->node_name($adapter), lc $device, uc unpack("H*", $key);
+      }
+    }' "$1"
+}
+
+# aabbccddeeff -> AA:BB:CC:DD:EE:FF, like BlueZ's directory names.
+mac() { sed 's/../&:/g; s/:$//' <<<"${1^^}"; }
+
+link_key() { sed -n '/^\[LinkKey\]/,/^\[/ s/^Key=//p' "$1" | head -1; }
+
+main() {
+  local dry_run=0
+  case ${1:-} in
+    --dry-run) dry_run=1 ;;
+    '') ;;
+    *) fail "usage: bt-windows-keys [--dry-run]" ;;
+  esac
+
+  [[ $EUID -eq 0 ]] || fail "run as root"
+  work=$(mktemp -d)
+  trap cleanup EXIT
+  mount_windows
+
+  # Fast Startup and hibernation leave the registry on disk out of date. Nothing
+  # is recorded here, so the next boot looks again.
+  local sig
+  sig=$(head -c4 "$win/hiberfil.sys" 2>/dev/null | tr -d '\0' | tr '[:upper:]' '[:lower:]' || true)
+  case $sig in
+    hibr | rstr) fail "Windows is hibernated or used Fast Startup, so its keys may be old. Leaving Arch's pairings alone. Turn off Fast Startup, or use Restart to leave Windows." ;;
+  esac
+
+  local hive=$work/SYSTEM seq1 seq2
+  cp "$win/Windows/System32/config/SYSTEM" "$hive"
+  read -r seq1 seq2 < <(od -An -tu4 -j4 -N8 "$hive")
+  [[ $seq1 == "$seq2" ]] || fail "Windows didn't shut down cleanly, so its keys may be old. Leaving Arch's pairings alone."
+
+  local keys
+  keys=$(read_keys "$hive")
+
+  local first_run=0
+  [[ -d $state ]] || first_run=1
+  ((dry_run)) || mkdir -p "$state"
+
+  local adapter device key
+  while read -r adapter device key; do
+    [[ -n $key ]] || continue
+    local info=$bluez/$(mac "$adapter")/$(mac "$device")/info
+    local seen=$state/$adapter-$device
+    local fingerprint last='' label
+    fingerprint=$(printf '%s' "$key" | sha256sum | cut -d' ' -f1)
+    [[ -f $seen ]] && last=$(<"$seen")
+    label=$(mac "$device")
+    [[ -f $info ]] && label=$(sed -n 's/^Name=//p' "$info" | head -1)
+    label=${label:-$(mac "$device")}
+
+    if ((first_run)); then
+      echo "$label: recorded Windows' key, not importing on the first run"
+    elif [[ $fingerprint == "$last" ]]; then
+      echo "$label: unchanged in Windows, leaving Arch's pairing alone"
+    elif [[ ! -f $info ]]; then
+      echo "$label: paired in Windows only, nothing to update in Arch"
+    elif [[ $(link_key "$info") == "$key" ]]; then
+      echo "$label: already matches Windows"
+    elif [[ -z $(link_key "$info") ]]; then
+      echo "$label: Arch's entry has no classic link key, skipping" >&2
+      continue
+    elif ((dry_run)); then
+      echo "$label: would import the new key from Windows"
+    else
+      bluetooth_running && fail "stop bluetoothd first; to import, run: sudo systemctl restart bluetooth"
+      cp -p "$info" "$seen.info.bak"
+      sed -i "/^\[LinkKey\]/,/^\[/ s/^Key=.*/Key=$key/" "$info"
+      [[ $(link_key "$info") == "$key" ]] || fail "$label: writing the key to $info failed"
+      echo "$label: imported the new key from Windows"
+    fi
+
+    ((dry_run)) || printf '%s\n' "$fingerprint" >"$seen"
+  done <<<"$keys"
+
+  [[ -n $keys ]] || echo "Windows has no classic Bluetooth pairings."
+}
+
+if [[ ${BASH_SOURCE[0]} == "$0" ]]; then
+  main "$@"
+fi

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Installs metals, the Scala language server, with coursier (Scala's own
+# installer; the AUR's metals package is outdated) into ~/.local/bin, where
+# helix finds it. chezmoi reruns this once coursier is installed:
+#   coursier {{ lookPath "coursier" }}
+# `coursier update metals` upgrades it later.
+set -euo pipefail
+
+if ! command -v coursier >/dev/null; then
+  echo "metals: coursier not installed yet; metals goes in on the next chezmoi apply"
+  exit 0
+fi
+
+coursier install --install-dir "$HOME/.local/bin" metals

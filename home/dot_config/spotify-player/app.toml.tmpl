@@ -1,0 +1,6 @@
+theme = "shin"
+
+# Your own Spotify app ID (developer.spotify.com/dashboard) instead of the shared
+# default, which Spotify rate-limits. It lives in an untracked file, client_id,
+# next to this one; create it on a new machine with just the ID in it.
+client_id_command = { command = "cat", args = ["{{ .chezmoi.homeDir }}/.config/spotify-player/client_id"] }

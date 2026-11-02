@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# A pinentry (the password-prompt protocol rbw, gpg and others use) as a rofi
+# password prompt, so unlocking matches the rest of the desktop. Used by rbw:
+# see ~/.config/rbw. Commands it doesn't care about just get OK.
+desc= prompt=Password err=
+
+decode() { printf '%b' "${1//%/\\x}"; }   # protocol text is %XX-escaped
+encode() { local s=${1//%/%25}; s=${s//$'\n'/%0A}; printf '%s' "${s//$'\r'/%0D}"; }
+
+echo "OK Pleased to meet you"
+while IFS= read -r line; do
+  cmd=${line%% *}
+  arg=${line#"$cmd"}; arg=${arg# }
+  case $cmd in
+    SETDESC)   desc=$(decode "$arg"); echo OK ;;
+    SETPROMPT) prompt=$(decode "$arg"); prompt=${prompt%:}; echo OK ;;
+    SETERROR)  err=$(decode "$arg"); echo OK ;;
+    GETPIN)
+      msg=${err:-$desc}; err=
+      args=(-dmenu -password -p "$prompt" -theme-str 'listview { enabled: false; } entry { placeholder: ""; }')
+      [[ -n $msg ]] && args+=(-mesg "$msg")
+      if pin=$(rofi "${args[@]}" </dev/null); then
+        [[ -n $pin ]] && echo "D $(encode "$pin")"
+        echo OK
+      else
+        echo "ERR 83886179 Operation cancelled <rofi>"
+      fi ;;
+    BYE) echo OK; exit 0 ;;
+    *) echo OK ;;
+  esac
+done

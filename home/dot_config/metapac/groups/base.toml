@@ -1,0 +1,24 @@
+# Core system: kernel, package tooling and basic CLI utilities.
+
+[arch]
+packages = [
+  "base",
+  "base-devel",
+  "linux",
+  "linux-firmware",
+  "mkinitcpio",
+  "dosfstools",  # FAT tools for the EFI partition (/boot)
+  "zram-generator",
+  "sudo",
+  "git",
+  "wget",
+  "nano",
+  "vim",
+  "smartmontools",
+  "pacman-contrib",  # checkupdates, used by the waybar updates module
+  "chezmoi",
+
+  # AUR
+  "paru",
+  "metapac",
+]

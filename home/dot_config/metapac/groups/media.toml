@@ -1,0 +1,15 @@
+# Music, video, images and documents.
+
+[arch]
+packages = [
+  "spotify-player",
+  "cava",
+  { name = "mpd", hooks = { after_sync = ["systemctl", "--user", "enable", "mpd.service"] } },
+  "rmpc",
+  "mpv",
+  "mpv-mpris",
+  "yt-dlp",
+  "imv",
+  "zathura",
+  "zathura-pdf-mupdf",
+]

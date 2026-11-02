@@ -1,0 +1,10 @@
+# imv, shin palette. Default keybindings (unlike /etc/imv_config, which this
+# file replaces and which turns them off): see `man imv`.
+
+[options]
+background = 000000
+overlay_font = JetBrainsMono Nerd Font:12
+overlay_text_color = e9e9e9
+overlay_text_alpha = ff
+overlay_background_color = 1e1e1e
+overlay_background_alpha = e6

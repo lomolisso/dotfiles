@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Reboots straight into Windows, once: sets the UEFI BootNext variable to the
+# Windows Boot Manager entry, so the firmware skips the boot menu for the next
+# boot only. No keyboard needed. The boot after that shows the boot menu again,
+# which defaults to Arch.
+# Installed root-owned to /usr/local/bin by install.sh, next to this file;
+# /etc/sudoers.d/reboot-to-windows lets you run it without a password.
+set -euo pipefail
+
+num=$(efibootmgr | awk '/^Boot[0-9A-F]{4}\*? Windows Boot Manager/ { print substr($1, 5, 4); exit }')
+if [[ -z $num ]]; then
+  echo "reboot-to-windows: no 'Windows Boot Manager' entry in efibootmgr" >&2
+  exit 1
+fi
+efibootmgr --quiet --bootnext "$num"
+systemctl reboot

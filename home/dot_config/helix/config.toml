@@ -1,0 +1,35 @@
+# Only overrides; everything else uses helix's defaults.
+theme = "shin"   # ~/.config/helix/themes/shin.toml
+
+[editor]
+cursorline = true
+bufferline = "multiple"
+color-modes = true   # mode badge uses the wine statusline.normal/insert/select colors
+popup-border = "all"   # popups are black like the page, so outline them
+# Errors and warnings as text next to the code, like VS Code's error lens:
+# the whole message on the cursor's line, a short one at the end of other lines.
+end-of-line-diagnostics = "hint"
+
+[editor.inline-diagnostics]
+cursor-line = "warning"
+
+[editor.cursor-shape]
+insert = "bar"
+
+[editor.indent-guides]
+render = true
+character = "▏"
+
+# The file picker (Space f) and explorer (Space e) show dotfiles too; .gitignored
+# files stay hidden.
+[editor.file-picker]
+hidden = false
+
+# The language servers themselves come from the dev metapac group.
+
+[keys.normal]
+F1 = ":open ~/.config/helix/cheatsheet.md"   # key cheat sheet
+C-s = ":write"   # save like everywhere else (was: save selection to jumplist)
+
+[keys.insert]
+C-s = ":write"

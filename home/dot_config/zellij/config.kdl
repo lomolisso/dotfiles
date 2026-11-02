@@ -1,0 +1,138 @@
+// Only overrides; everything else uses zellij's defaults.
+// fish for new panes ($SHELL stays bash, see ~/.config/fish/config.fish).
+default_shell "fish"
+
+// shin colors (RGB): greys + wine red like waybar/rofi; pane frames are wine,
+// the focused one bright wine, like niri's window borders.
+theme "shin"
+
+themes {
+    shin {
+        // body text; emphasis_* color key hints and highlights
+        text_unselected {
+            base 233 233 233
+            background 0 0 0
+            emphasis_0 203 77 102
+            emphasis_1 213 144 158
+            emphasis_2 207 207 207
+            emphasis_3 152 152 152
+        }
+        text_selected {
+            base 233 233 233
+            background 42 42 42
+            emphasis_0 203 77 102
+            emphasis_1 213 144 158
+            emphasis_2 207 207 207
+            emphasis_3 152 152 152
+        }
+        // status-bar / tab-bar ribbons: active one wine, the rest grey
+        ribbon_selected {
+            base 233 233 233
+            background 140 22 37
+            emphasis_0 213 144 158
+            emphasis_1 233 233 233
+            emphasis_2 207 207 207
+            emphasis_3 152 152 152
+        }
+        ribbon_unselected {
+            base 207 207 207
+            background 42 42 42
+            emphasis_0 203 77 102
+            emphasis_1 233 233 233
+            emphasis_2 213 144 158
+            emphasis_3 152 152 152
+        }
+        table_title {
+            base 203 77 102
+            background 0
+            emphasis_0 213 144 158
+            emphasis_1 233 233 233
+            emphasis_2 207 207 207
+            emphasis_3 152 152 152
+        }
+        table_cell_selected {
+            base 233 233 233
+            background 42 42 42
+            emphasis_0 203 77 102
+            emphasis_1 213 144 158
+            emphasis_2 207 207 207
+            emphasis_3 152 152 152
+        }
+        table_cell_unselected {
+            base 207 207 207
+            background 0 0 0
+            emphasis_0 203 77 102
+            emphasis_1 213 144 158
+            emphasis_2 233 233 233
+            emphasis_3 152 152 152
+        }
+        list_selected {
+            base 233 233 233
+            background 42 42 42
+            emphasis_0 203 77 102
+            emphasis_1 213 144 158
+            emphasis_2 207 207 207
+            emphasis_3 152 152 152
+        }
+        list_unselected {
+            base 207 207 207
+            background 0 0 0
+            emphasis_0 203 77 102
+            emphasis_1 213 144 158
+            emphasis_2 233 233 233
+            emphasis_3 152 152 152
+        }
+        frame_selected {
+            base 203 77 102
+            background 0
+            emphasis_0 213 144 158
+            emphasis_1 233 233 233
+            emphasis_2 207 207 207
+            emphasis_3 0
+        }
+        frame_unselected {
+            base 140 22 37
+            background 0
+            emphasis_0 152 152 152
+            emphasis_1 207 207 207
+            emphasis_2 152 152 152
+            emphasis_3 0
+        }
+        frame_highlight {
+            base 213 144 158
+            background 0
+            emphasis_0 203 77 102
+            emphasis_1 213 144 158
+            emphasis_2 213 144 158
+            emphasis_3 213 144 158
+        }
+        exit_code_success {
+            base 162 255 51
+            background 0
+            emphasis_0 207 207 207
+            emphasis_1 0 0 0
+            emphasis_2 213 144 158
+            emphasis_3 152 152 152
+        }
+        exit_code_error {
+            base 203 77 102
+            background 0
+            emphasis_0 213 144 158
+            emphasis_1 0
+            emphasis_2 0
+            emphasis_3 0
+        }
+        multiplayer_user_colors {
+            player_1 203 77 102
+            player_2 213 144 158
+            player_3 207 207 207
+            player_4 162 255 51
+            player_5 102 138 255
+            player_6 217 92 255
+            player_7 26 206 255
+            player_8 255 179 26
+            player_9 152 152 152
+            player_10 233 233 233
+        }
+    }
+}

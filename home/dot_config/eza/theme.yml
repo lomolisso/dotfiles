@@ -1,0 +1,83 @@
+# shin colors for eza: greys + wine red; other hues only for file types
+# and git status. Keys from eza 0.23's theme (src/theme/ui_styles.rs).
+filekinds:
+  normal: {foreground: "#e9e9e9"}
+  directory: {foreground: "#cb4d66", is_bold: true}
+  symlink: {foreground: "#d5909e"}
+  executable: {foreground: "#a2ff33", is_bold: true}
+  pipe: {foreground: "#ffb31a"}
+  socket: {foreground: "#ffb31a"}
+  block_device: {foreground: "#ffb31a"}
+  char_device: {foreground: "#ffb31a"}
+  special: {foreground: "#ffb31a"}
+  mount_point: {foreground: "#cb4d66", is_underline: true}
+perms:
+  user_read: {foreground: "#e9e9e9", is_bold: true}
+  user_write: {foreground: "#cb4d66", is_bold: true}
+  user_execute_file: {foreground: "#a2ff33", is_bold: true}
+  user_execute_other: {foreground: "#a2ff33", is_bold: true}
+  group_read: {foreground: "#cfcfcf"}
+  group_write: {foreground: "#cb4d66"}
+  group_execute: {foreground: "#a2ff33"}
+  other_read: {foreground: "#989898"}
+  other_write: {foreground: "#cb4d66"}
+  other_execute: {foreground: "#a2ff33"}
+  special_user_file: {foreground: "#d5909e"}
+  special_other: {foreground: "#d5909e"}
+  attribute: {foreground: "#989898"}
+size:
+  number_byte: {foreground: "#cfcfcf"}
+  number_kilo: {foreground: "#cfcfcf"}
+  number_mega: {foreground: "#d5909e"}
+  number_giga: {foreground: "#cb4d66"}
+  number_huge: {foreground: "#cb4d66", is_bold: true}
+  unit_byte: {foreground: "#989898"}
+  unit_kilo: {foreground: "#989898"}
+  unit_mega: {foreground: "#989898"}
+  unit_giga: {foreground: "#989898"}
+  unit_huge: {foreground: "#989898"}
+users:
+  user_you: {foreground: "#cfcfcf"}
+  user_root: {foreground: "#cb4d66"}
+  user_other: {foreground: "#989898"}
+  group_yours: {foreground: "#cfcfcf"}
+  group_other: {foreground: "#989898"}
+  group_root: {foreground: "#cb4d66"}
+links:
+  normal: {foreground: "#cfcfcf"}
+  multi_link_file: {foreground: "#d5909e"}
+git:
+  new: {foreground: "#a2ff33"}
+  modified: {foreground: "#ffb31a"}
+  deleted: {foreground: "#cb4d66"}
+  renamed: {foreground: "#1aceff"}
+  typechange: {foreground: "#d95cff"}
+  ignored: {foreground: "#5c5c5c"}
+  conflicted: {foreground: "#cb4d66", is_bold: true}
+git_repo:
+  branch_main: {foreground: "#cfcfcf"}
+  branch_other: {foreground: "#d5909e"}
+  git_clean: {foreground: "#a2ff33"}
+  git_dirty: {foreground: "#cb4d66"}
+file_type:
+  image: {foreground: "#ffb31a"}
+  video: {foreground: "#d95cff"}
+  music: {foreground: "#d95cff"}
+  lossless: {foreground: "#d95cff"}
+  crypto: {foreground: "#d5909e"}
+  document: {foreground: "#1aceff"}
+  compressed: {foreground: "#d5909e"}
+  temp: {foreground: "#5c5c5c"}
+  compiled: {foreground: "#989898"}
+  build: {foreground: "#cfcfcf", is_underline: true}
+  source: {foreground: "#e9e9e9"}
+punctuation: {foreground: "#5c5c5c"}
+date: {foreground: "#989898"}
+inode: {foreground: "#989898"}
+blocks: {foreground: "#989898"}
+header: {foreground: "#e9e9e9", is_underline: true}
+octal: {foreground: "#d5909e"}
+symlink_path: {foreground: "#d5909e"}
+control_char: {foreground: "#cb4d66"}
+broken_symlink: {foreground: "#cb4d66", is_underline: true}
+broken_path_overlay: {is_underline: true}

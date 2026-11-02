@@ -1,0 +1,10 @@
+# metapac config, deployed to ~/.config/metapac by chezmoi.
+
+enabled_backends = ["arch"]
+
+# Every .toml file found recursively in groups/ is used.
+hostname_groups_enabled = false
+
+[arch]
+# paru covers both the official repos and the AUR.
+package_manager = "paru"

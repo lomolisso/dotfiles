@@ -1,0 +1,7 @@
+# rofi-rbw (Super+P): picks a Bitwarden entry and types it into the focused
+# window; when it copies instead, wl-copy marks it sensitive so cliphist skips it.
+action = type
+typer = wtype
+clipboarder = wl-copy
+clear-after = 30
+prompt = 󰌾 Passwords

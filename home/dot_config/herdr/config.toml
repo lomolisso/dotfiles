@@ -1,0 +1,34 @@
+onboarding = false
+
+[terminal]
+# fish in new panes; $SHELL stays bash for scripts and agents.
+default_shell = "/usr/bin/fish"
+
+# shin palette over the built-in theme, styled like btop/bluetui: black
+# backgrounds, dark wine #8c1625 for borders/separators and highlighted rows,
+# bright wine #cb4d66 for the accent (active tab), the sidebar headings and
+# labels ("spaces", "agents", "new", "menu") and the row details ("· 1",
+# "claude"; all overlay0). Sidebar rows keep herdr's default layout.
+[theme]
+name = "catppuccin"
+
+[theme.custom]
+accent = "#cb4d66"
+panel_bg = "#000000"
+sidebar_bg = "#000000"
+active_row_bg = "#8c1625"   # current space/agent row
+selection_bg = "#8c1625"
+surface0 = "#2a2a2a"
+surface1 = "#8c1625"        # separators
+surface_dim = "#8c1625"     # border between sidebar and tabs
+overlay0 = "#cb4d66"        # sidebar headings and labels
+overlay1 = "#cb4d66"
+text = "#e9e9e9"
+subtext0 = "#cfcfcf"
+mauve = "#d5909e"
+red = "#cb4d66"
+peach = "#d5909e"
+green = "#a2ff33"
+yellow = "#ffb31a"
+blue = "#668aff"
+teal = "#1aceff"

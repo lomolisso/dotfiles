@@ -1,0 +1,58 @@
+# Theme: shin
+# The shin palette (black, greys, wine red) shared with waybar, rofi and ghostty.
+# Graphs and meters run grey -> wine -> rose as load rises.
+
+theme[main_bg]="#000000"
+theme[main_fg]="#e9e9e9"
+theme[title]="#e9e9e9"
+theme[hi_fg]="#cb4d66"
+theme[selected_bg]="#8c1625"
+theme[selected_fg]="#e9e9e9"
+theme[inactive_fg]="#5c5c5c"
+theme[graph_text]="#989898"
+theme[meter_bg]="#2a2a2a"
+theme[proc_misc]="#cb4d66"
+
+# Box outlines and dividers: dark wine, like waybar's border
+theme[cpu_box]="#8c1625"
+theme[mem_box]="#8c1625"
+theme[net_box]="#8c1625"
+theme[proc_box]="#8c1625"
+theme[div_line]="#393939"
+
+# Graphs and meters: grey -> wine -> rose
+theme[temp_start]="#5c5c5c"
+theme[temp_mid]="#8c1625"
+theme[temp_end]="#d5909e"
+
+theme[cpu_start]="#5c5c5c"
+theme[cpu_mid]="#8c1625"
+theme[cpu_end]="#d5909e"
+
+theme[free_start]="#393939"
+theme[free_mid]="#5c5c5c"
+theme[free_end]="#989898"
+
+theme[cached_start]="#393939"
+theme[cached_mid]="#750017"
+theme[cached_end]="#a8304a"
+
+theme[available_start]="#393939"
+theme[available_mid]="#5c5c5c"
+theme[available_end]="#cfcfcf"
+
+theme[used_start]="#750017"
+theme[used_mid]="#a8304a"
+theme[used_end]="#d5909e"
+
+theme[download_start]="#5c5c5c"
+theme[download_mid]="#8c1625"
+theme[download_end]="#cb4d66"
+
+theme[upload_start]="#5c5c5c"
+theme[upload_mid]="#8c1625"
+theme[upload_end]="#d5909e"
+
+theme[process_start]="#cb4d66"
+theme[process_mid]="#d5909e"
+theme[process_end]="#d5909e"

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# bluetui in the shin palette. bluetui hard-codes basic terminal colors and has
+# no theme settings, so for its lifetime this remaps them in the terminal's own
+# palette (OSC 4), then restores the theme (OSC 104):
+#   yellow (focused list headers) and green (focused border) -> bright wine
+#   dark grey (selected row background)                       -> dark wine
+#   blue (key help line)                                       -> muted grey
+remap() { printf '\e]4;3;#cb4d66\a\e]4;2;#cb4d66\a\e]4;8;#8c1625\a\e]4;4;#989898\a'; }
+restore() { printf '\e]104;3;2;8;4\a'; }
+trap restore EXIT INT TERM
+remap
+/usr/bin/bluetui "$@"

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# nmtui (NetworkManager) in the shin palette, via its newt library's NEWT_COLORS.
+# Exact hex works because ghostty advertises truecolor. Dark wine borders and
+# highlights, white titles, greys for the rest, bright wine progress fill.
+NEWT_COLORS='root=#cfcfcf,#000000;roottext=#989898,#000000;window=#e9e9e9,#000000;border=#8c1625,#000000;shadow=#000000,#000000;title=#e9e9e9,#000000;button=#cfcfcf,#2a2a2a;actbutton=#e9e9e9,#8c1625;compactbutton=#cfcfcf,#000000;checkbox=#cfcfcf,#000000;actcheckbox=#e9e9e9,#8c1625;entry=#e9e9e9,#2a2a2a;disentry=#5c5c5c,#000000;label=#cfcfcf,#000000;listbox=#cfcfcf,#000000;actlistbox=#e9e9e9,#8c1625;sellistbox=#e9e9e9,#2a2a2a;actsellistbox=#e9e9e9,#8c1625;textbox=#cfcfcf,#000000;acttextbox=#e9e9e9,#8c1625;helpline=#989898,#000000;emptyscale=#393939,#393939;fullscale=#cb4d66,#cb4d66' \
+  exec /usr/bin/nmtui "$@"

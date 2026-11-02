@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# SSH_ASKPASS for ssh (set in ~/.config/fish/config.fish): answers the password
+# prompt for the logins in ~/.config/rbw-askpass/hosts from Bitwarden via rbw
+# (which unlocks the vault with rofi-pinentry if needed). Every other prompt (other hosts, key passphrases,
+# "continue connecting (yes/no)?") is asked in the terminal as usual.
+# rbw answers once per ssh process: if the server rejects that password, the
+# retry is asked in the terminal instead of resending it (and risking a lockout).
+set -uo pipefail
+
+prompt=${1:-}
+hosts=${XDG_CONFIG_HOME:-$HOME/.config}/rbw-askpass/hosts
+mark=${XDG_RUNTIME_DIR:-/tmp}/rbw-askpass
+tried=$mark.$PPID   # $PPID is the ssh asking
+
+# Forget markers of ssh processes that are gone.
+for f in "$mark".*; do [[ -e $f && ! -d /proc/${f##*.} ]] && rm -f "$f"; done
+
+# Notifications (e.g. "touch your security key"): just show them.
+if [[ ${SSH_ASKPASS_PROMPT:-} == none ]]; then
+  printf '%s\n' "$prompt" >/dev/tty 2>/dev/null; exit 0
+fi
+
+# "user@host's password: " (password auth) or "(user@host) Password: " (PAM).
+target=
+if [[ $prompt =~ ^([^@[:space:]]+@[^\']+)\'s\ password:\ ?$ ]] ||
+   [[ $prompt =~ ^\(([^@[:space:]]+@[^\)]+)\)\ Password:\ ?$ ]]; then
+  target=${BASH_REMATCH[1]}
+fi
+if [[ -n $target && ! -e $tried && -r $hosts ]]; then
+  entry=$(awk -v t="$target" '!/^[[:space:]]*#/ && $1 == t { sub(/^[^[:space:]]+[[:space:]]+/, ""); print; exit }' "$hosts")
+  if [[ -n $entry ]] && command -v rbw >/dev/null && pass=$(rbw get "$entry" 2>/dev/null) && [[ -n $pass ]]; then
+    : >"$tried"
+    printf '%s\n' "$pass"; exit 0
+  fi
+fi
+
+# Anything else: ask in the terminal, as ssh itself would.
+exec 3<>/dev/tty || exit 1
+printf '%s' "$prompt" >&3
+if [[ ${SSH_ASKPASS_PROMPT:-} == confirm || $prompt == *'(yes/no'* ]]; then
+  read -r -u 3 answer || exit 1
+  [[ ${SSH_ASKPASS_PROMPT:-} == confirm && ! $answer =~ ^[Yy] ]] && exit 1
+else
+  read -rs -u 3 answer || { printf '\n' >&3; exit 1; }
+  printf '\n' >&3
+fi
+printf '%s\n' "$answer"

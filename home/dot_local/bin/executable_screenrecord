@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Starts or stops a recording of the focused monitor with gpu-screen-recorder.
+# Bound to Mod+Alt+R in niri. Recordings go to ~/Videos/Recordings.
+set -euo pipefail
+
+if pkill -SIGINT -f '^gpu-screen-recorder '; then
+  notify-send -a "Screen recorder" "Recording saved" "$(xdg-user-dir VIDEOS)/Recordings"
+  exit
+fi
+
+dir="$(xdg-user-dir VIDEOS)/Recordings"
+mkdir -p "$dir"
+output="$(niri msg --json focused-output | jq -r .name)"
+
+notify-send -a "Screen recorder" -t 2000 "Recording $output" "Press Mod+Alt+R again to stop"
+sleep 2
+exec gpu-screen-recorder -w "$output" -f 60 -a default_output \
+  -o "$dir/Recording $(date '+%Y-%m-%d %H-%M-%S').mp4"

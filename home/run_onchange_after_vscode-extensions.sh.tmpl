@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# VS Code extensions. chezmoi reruns this when the list changes and once VS Code
+# is installed:
+#   code {{ lookPath "code" }}
+set -euo pipefail
+
+if ! command -v code >/dev/null; then
+  echo "vscode: not installed yet; extensions go in on the next chezmoi apply"
+  exit 0
+fi
+
+for extension in \
+  ms-vscode-remote.remote-ssh \
+  ms-vscode-remote.remote-ssh-edit \
+  ms-vscode.remote-explorer \
+  myriad-dreamin.tinymist \
+  pkief.material-icon-theme \
+  tomoki1207.pdf \
+  ms-toolsai.jupyter-keymap; do
+  code --install-extension "$extension"
+done

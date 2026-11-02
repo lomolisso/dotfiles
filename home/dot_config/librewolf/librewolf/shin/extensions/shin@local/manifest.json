@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "shin",
+  "description": "The shin rice in LibreWolf: terminal start page, theme colors, media position for waybar.",
+  "version": "1.0",
+  "browser_specific_settings": {
+    "gecko": { "id": "shin@local" }
+  },
+  "permissions": ["theme", "search"],
+  "background": { "scripts": ["background.js"] },
+  "chrome_url_overrides": { "newtab": "start.html" },
+  "chrome_settings_overrides": { "homepage": "start.html" },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["media.js"],
+      "all_frames": true,
+      "run_at": "document_start"
+    }
+  ]
+}

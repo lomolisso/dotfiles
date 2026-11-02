@@ -1,0 +1,98 @@
+# shin colors for yazi (overrides only; the rest is yazi's dark preset).
+# Greys + wine red for the UI; other hues only to tell file types apart.
+
+[mgr]
+cwd = { fg = "#cb4d66", bold = true }
+find_keyword  = { fg = "#cb4d66", bold = true, underline = true }
+find_position = { fg = "#d5909e", bold = true }
+marker_copied   = { fg = "#a2ff33", bg = "#a2ff33" }
+marker_cut      = { fg = "#cb4d66", bg = "#cb4d66" }
+marker_marked   = { fg = "#d5909e", bg = "#d5909e" }
+marker_selected = { fg = "#8c1625", bg = "#8c1625" }
+count_copied   = { fg = "#000000", bg = "#a2ff33" }
+count_cut      = { fg = "#e9e9e9", bg = "#cb4d66" }
+count_selected = { fg = "#e9e9e9", bg = "#8c1625" }
+border_style  = { fg = "#8c1625" }
+
+[tabs]
+active   = { fg = "#e9e9e9", bg = "#8c1625", bold = true }
+inactive = { fg = "#989898", bg = "#2a2a2a" }
+
+[mode]
+normal_main = { fg = "#e9e9e9", bg = "#8c1625", bold = true }
+normal_alt  = { fg = "#e9e9e9", bg = "#2a2a2a" }
+select_main = { fg = "#000000", bg = "#cb4d66", bold = true }
+select_alt  = { fg = "#cb4d66", bg = "#2a2a2a" }
+unset_main  = { fg = "#000000", bg = "#d5909e", bold = true }
+unset_alt   = { fg = "#d5909e", bg = "#2a2a2a" }
+
+[indicator]
+parent  = { fg = "#e9e9e9", bg = "#2a2a2a" }
+# the hovered file/folder row
+current = { fg = "#e9e9e9", bg = "#8c1625", bold = true }
+preview = { underline = true }
+
+[status]
+perm_sep   = { fg = "#5c5c5c" }
+perm_type  = { fg = "#cb4d66" }
+perm_read  = { fg = "#cfcfcf" }
+perm_write = { fg = "#d5909e" }
+perm_exec  = { fg = "#a2ff33" }
+progress_label  = { fg = "#e9e9e9", bold = true }
+progress_normal = { fg = "#8c1625", bg = "#2a2a2a" }
+progress_error  = { fg = "#cb4d66", bg = "#2a2a2a" }
+
+[which]
+border          = { fg = "#8c1625" }
+cand            = { fg = "#cb4d66" }
+rest            = { fg = "#5c5c5c" }
+desc            = { fg = "#cfcfcf" }
+separator_style = { fg = "#5c5c5c" }
+
+[confirm]
+border = { fg = "#8c1625" }
+title  = { fg = "#cb4d66" }
+
+[spot]
+border   = { fg = "#8c1625" }
+title    = { fg = "#cb4d66" }
+tbl_col  = { fg = "#cb4d66" }
+tbl_cell = { fg = "#e9e9e9", bg = "#8c1625" }
+
+[notify]
+title_info  = { fg = "#cfcfcf" }
+title_warn  = { fg = "#d5909e" }
+title_error = { fg = "#cb4d66" }
+
+[pick]
+border = { fg = "#8c1625" }
+active = { fg = "#cb4d66", bold = true }
+
+[input]
+border = { fg = "#8c1625" }
+
+[cmp]
+border = { fg = "#8c1625" }
+
+[tasks]
+border  = { fg = "#8c1625" }
+hovered = { fg = "#cb4d66", bold = true }
+
+[help]
+border  = { fg = "#8c1625" }
+chord   = { fg = "#cb4d66" }
+hovered = { fg = "#e9e9e9", bg = "#cb4d66", bold = true }
+
+[filetype]
+rules = [
+	{ mime = "**/image/*", fg = "#ffb31a" },
+	{ mime = "**/{audio,video}/*", fg = "#d95cff" },
+	{ mime = "**/application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#d5909e" },
+	{ mime = "**/application/{pdf,doc,rtf}", fg = "#1aceff" },
+	{ mime = "vfs/{absent,stale}", fg = "#5c5c5c" },
+	{ url = "*", is = "orphan", bg = "#750017" },
+	{ url = "*", is = "exec", fg = "#a2ff33" },
+	{ url = "*", is = "dummy", bg = "#750017" },
+	{ url = "*/", is = "dummy", bg = "#750017" },
+	{ url = "*/", fg = "#cb4d66" },
+]

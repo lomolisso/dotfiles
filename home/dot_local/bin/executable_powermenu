@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# System menu in rofi, opened from waybar's power icon. Machine-specific entries
+# come from the files in ~/.config/powermenu.d, one per line: label<TAB>command.
+labels=()
+declare -A extra
+for file in "$HOME"/.config/powermenu.d/*; do
+  [[ -f $file ]] || continue
+  while IFS=$'\t' read -r label cmd; do
+    [[ -n $label ]] && labels+=("$label") && extra[$label]=$cmd
+  done <"$file"
+done
+
+choice=$(printf '%s\n' "󰌾  Lock" "󰤄  Suspend" "󰍃  Log out" "󰜉  Reboot" "${labels[@]}" "󰐥  Shut down" |
+  rofi -dmenu -i -p system) || exit 0
+if [[ -n ${extra[$choice]:-} ]]; then
+  exec sh -c "${extra[$choice]}"
+fi
+case "$choice" in
+  *Lock) loginctl lock-session ;;
+  *Suspend) systemctl suspend ;;
+  *"Log out") niri msg action quit --skip-confirmation ;;
+  *Reboot) systemctl reboot ;;
+  *"Shut down") systemctl poweroff ;;
+esac

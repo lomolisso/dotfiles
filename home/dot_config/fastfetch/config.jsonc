@@ -1,0 +1,134 @@
+// fastfetch in the shin palette: Shin's mask (ASCII) and the specs grouped like a
+// tree. Keys/icons bright wine, values white, branches grey.
+// Left out on purpose (privacy): local IP, the host's part/serial number, locale.
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  // Shin's heart mask as colored ASCII art (logo/shin.txt, made from logo/shin.svg
+  // with chafa: background, outlines and eyes empty, all characters #cb4d66).
+  // file-raw prints it as is, so its size is given here.
+  "logo": {
+    "type": "file-raw",
+    "source": "~/.config/fastfetch/logo/shin.txt",
+    "width": 41,
+    "height": 26,
+    "padding": { "top": 0, "left": 1, "right": 4 }
+  },
+  "display": {
+    "separator": " ",
+    "color": {
+      "keys": "#cb4d66",
+      "title": "#cb4d66",
+      "output": "#e9e9e9",
+      "separator": "#5c5c5c"
+    },
+    "bar": {
+      "char": {
+        "elapsed": "■",
+        "total": "─"
+      },
+      "border": {
+        "left": "[ ",
+        "right": " ]"
+      },
+      "color": {
+        "elapsed": "#cb4d66",
+        "total": "#5c5c5c",
+        "border": "#5c5c5c"
+      },
+      "width": 12
+    },
+    "percent": {
+      "type": [
+        "bar",
+        "num"
+      ],
+      "color": {
+        "green": "#e9e9e9",
+        "yellow": "#d5909e",
+        "red": "#cb4d66"
+      }
+    }
+  },
+  // Two empty lines first: centers the 22-line specs on the 26-line logo.
+  "modules": [
+    "break",
+    "break",
+    {
+      "type": "title"
+    },
+    "break",
+    {
+      "type": "os",
+      "key": "{#38;2;203;77;102}{icon} OS"
+    },
+    {
+      "type": "kernel",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} Kernel"
+    },
+    {
+      "type": "packages",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} Packages"
+    },
+    {
+      "type": "shell",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} Shell"
+    },
+    {
+      "type": "uptime",
+      "key": "{#38;2;92;92;92}└{#38;2;203;77;102} {icon} Uptime"
+    },
+    "break",
+    {
+      "type": "wm",
+      "key": "{#38;2;203;77;102}{icon} Window Manager"
+    },
+    {
+      "type": "lm",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} Login Manager"
+    },
+    {
+      "type": "terminal",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} Terminal"
+    },
+    {
+      "type": "terminalfont",
+      "key": "{#38;2;92;92;92}└{#38;2;203;77;102} {icon} Font"
+    },
+    "break",
+    {
+      "type": "host",
+      "key": "{#38;2;203;77;102}{icon} PC",
+      "format": "{vendor} {version}"
+    },
+    {
+      "type": "cpu",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} CPU"
+    },
+    {
+      "type": "gpu",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} GPU"
+    },
+    {
+      "type": "memory",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} RAM"
+    },
+    {
+      "type": "swap",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} Swap"
+    },
+    {
+      "type": "disk",
+      "key": "{#38;2;92;92;92}├{#38;2;203;77;102} {icon} Disk",
+      "folders": "/"
+    },
+    {
+      "type": "display",
+      "key": "{#38;2;92;92;92}└{#38;2;203;77;102} {icon} Display"
+    },
+    "break",
+    {
+      "type": "colors",
+      "symbol": "circle"
+    }
+  ]
+}

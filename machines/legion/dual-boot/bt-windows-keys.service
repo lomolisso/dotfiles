@@ -1,0 +1,13 @@
+[Unit]
+Description=Import changed Bluetooth pairing keys from Windows
+Documentation=file:///usr/local/bin/bt-windows-keys
+# Wanted, not required: Bluetooth still starts if this fails.
+Before=bluetooth.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/bt-windows-keys
+TimeoutStartSec=30
+
+[Install]
+WantedBy=bluetooth.service

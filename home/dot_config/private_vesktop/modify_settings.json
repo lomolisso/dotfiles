@@ -1,0 +1,7 @@
+#!/bin/sh
+# chezmoi modify script for Vesktop's own settings: sets these and keeps
+# whatever else Vesktop writes (e.g. the splash colors it picks from the theme).
+exec jq -n '((try input catch {}) // {})
+  | .discordBranch = "stable"
+  | .minimizeToTray = true
+  | .arRPC = false'

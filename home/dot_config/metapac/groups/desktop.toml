@@ -1,0 +1,30 @@
+# Desktop layer on top of niri: bar, launcher, notifications, wallpaper and
+# theming. Started and bound in ~/.config/niri/config.kdl (mako is D-Bus activated).
+
+[arch]
+packages = [
+  "waybar",
+  "rofi",
+  "mako",
+  "awww",
+  "swayosd",
+  "cliphist",
+  "wl-clip-persist",
+  "gpu-screen-recorder",
+  "matugen",
+  "wttrbar",  # AUR: weather in waybar
+
+  # Lock screen, auto-lock on idle, and media keys
+  "hyprlock",
+  "hypridle",
+  "playerctl",
+
+  # Passwords: Bitwarden CLI (rbw), its rofi picker, and wtype to type them
+  "rbw",
+  "rofi-rbw",
+  "wtype",
+
+  # notify-send and xdg-user-dir, used by ~/.local/bin/screenrecord
+  "libnotify",
+  "xdg-user-dirs",
+]

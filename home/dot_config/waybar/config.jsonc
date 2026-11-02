@@ -1,0 +1,235 @@
+// HANCORE waybar-themes V7.2a (github.com/HANCORE-linux/waybar-themes), adapted
+// for niri: niri/workspaces instead of hyprland, Omarchy commands replaced with
+// our apps, laptop-only modules (battery, backlight, power profiles) dropped,
+// layout rearranged and recolored by hand with the shin palette.
+{
+  "exclusive": true,
+  "reload_style_on_change": true,
+  "position": "top",
+  "passthrough": false,
+  "margin-top": 0,
+  // 6 here + 10 from "#waybar > box" in style.css = 16px, niri's window gap, so the
+  // bar lines up with the outer edges of tiled windows.
+  "margin-left": 6,
+  "margin-right": 6,
+  "margin-bottom": 0,
+  "modules-left": [
+    "custom/power",
+    "custom/separator",
+    "niri/workspaces",
+    "custom/separator",
+    "niri/window"
+  ],
+  "modules-center": ["custom/media"],
+  // Tray, stats, every other indicator, the toggle buttons, then the clock.
+  // New indicators go between "memory" and "idle_inhibitor".
+  "modules-right": [
+    "group/tray-expander",
+    "custom/separator",
+    "custom/gpu",
+    "custom/vram",
+    "cpu",
+    "memory",
+    "custom/separator",
+    "pulseaudio#input",
+    "pulseaudio#output",
+    "custom/separator",
+    "custom/weather",
+    "custom/updatespacman",
+    "custom/screenrecording-indicator",
+    "custom/separator",
+    "idle_inhibitor",
+    "bluetooth",
+    "custom/vpn",
+    "network",
+    "custom/separator",
+    "clock"
+  ],
+
+  "niri/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "一", "2": "二", "3": "三", "4": "四", "5": "五",
+      "6": "六", "7": "七", "8": "八", "9": "九", "10": "十"
+    }
+  },
+
+  "custom/separator": { "format": "|", "tooltip": false },
+
+  "custom/weather": {
+    "format": "{}°",
+    "tooltip": true,
+    "interval": 600,
+    "exec": "~/.config/waybar/scripts/weather.sh",
+    "return-type": "json"
+  },
+
+  "custom/power": {
+    "format": "",
+    "on-click": "~/.local/bin/powermenu",
+    "on-click-right": "ghostty",
+    "tooltip-format": "System menu: lock, suspend, log out, reboot, shut down"
+  },
+
+  "custom/updatespacman": {
+    "exec": "~/.config/waybar/scripts/updates.sh",
+    "return-type": "json",
+    "interval": 3600,
+    "signal": 7,
+    "on-click": "ghostty -e sh -c 'paru; pkill -RTMIN+7 waybar'"
+  },
+
+  // Shown only while a VPN tunnel is up (scripts/vpn.sh); hover for details.
+  "custom/vpn": {
+    "exec": "~/.config/waybar/scripts/vpn.sh",
+    "return-type": "json",
+    "interval": 3,
+    "signal": 9
+  },
+
+  "custom/screenrecording-indicator": {
+    "exec": "~/.config/waybar/scripts/recording.sh",
+    "return-type": "json",
+    "interval": 2,
+    "on-click": "~/.local/bin/screenrecord"
+  },
+
+  // Focused window as a Nerd Font icon + title. The format joins app id and title
+  // with an invisible separator (U+2063); each rule swaps a known app id for its
+  // icon (ghostty: ghost, LibreWolf and Firefox: Firefox, Vesktop: Discord, Files: folder, imv: image, mpv: play, Zathura: PDF, VS Code),
+  // and the last rules give any other app a generic icon and hide an empty title.
+  "niri/window": {
+    "format": "{app_id}⁣{title}",
+    "max-length": 60,
+    "separate-outputs": true,
+    "rewrite": {
+      "^com\\.mitchellh\\.ghostty⁣(.*)$": "󱙝  $1",
+      "^firefox⁣(.*?)( — Mozilla Firefox)?$": "󰈹  $1",
+      "^librewolf⁣(.*?)( — LibreWolf)?$": "󰈹  $1",
+      "^vesktop⁣(.*)$": "󰙯  $1",
+      "^org\\.gnome\\.Nautilus⁣(.*)$": "󰉖  $1",
+      "^imv⁣(.*)$": "󰥶  $1",
+      "^mpv⁣(.*)$": "󰐍  $1",
+      "^org\\.pwmt\\.zathura⁣(.*)$": "󰈦  $1",
+      "^(code|com\\.microsoft\\.VSCode)⁣(.*?)( - Visual Studio Code)?$": "󰨞  $2",
+      "^(?!(com\\.mitchellh\\.ghostty|firefox|librewolf|vesktop|org\\.gnome\\.Nautilus|imv|mpv|org\\.pwmt\\.zathura|code|com\\.microsoft\\.VSCode)⁣)[^⁣]+⁣(.*)$": "󰘔  $2",
+      "^⁣$": ""
+    }
+  },
+
+  "custom/gpu": {
+    "exec": "~/.config/waybar/scripts/gpu.sh util",
+    "interval": 5,
+    "tooltip": false,
+    "on-click": "ghostty -e btop"
+  },
+  "custom/vram": {
+    "exec": "~/.config/waybar/scripts/gpu.sh vram",
+    "interval": 5,
+    "tooltip": false,
+    "on-click": "ghostty -e btop"
+  },
+
+  "cpu": {
+    "interval": 5,
+    "format": "<span color='#8c1625'>cpu</span> {usage:02}%",
+    "on-click": "ghostty -e btop",
+    "states": { "warning": 50, "critical": 80 }
+  },
+  "memory": {
+    "interval": 5,
+    "format": "<span color='#8c1625'>mem</span> {percentage:02}%",
+    "tooltip-format": "Used {percentage}%\n{used:0.1f}GB/{total:0.1f}GB",
+    "on-click": "ghostty -e btop",
+    "states": { "warning": 50, "critical": 80 }
+  },
+
+  "clock": {
+    "format": "<span color='#8c1625'>{0:%H:%M}</span> <span size='small' color='#e9e9e9'><i>{0:%a, %b %d}</i></span>",
+    "format-alt": "{:L%d %B W%V %Y}",
+    "tooltip-format": "<span>{calendar}</span>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "on-click-right": "mode",
+      "format": {
+        "month": "<span color='#e9e9e9'><b>{}</b></span>",
+        "weekdays": "<span color='#989898'><b>{}</b></span>",
+        "today": "<span color='#cb4d66'><b>{}</b></span>"
+      }
+    }
+  },
+
+  // Icon only, in the same outline Material Design Nerd Font style as the other
+  // buttons: wifi arcs when connected (signal strength in the tooltip), a network
+  // cable for ethernet, crossed-out wifi when offline.
+  "network": {
+    "format-wifi": "󰖩",
+    "format-ethernet": "󰈀",
+    "format-linked": "󰖪",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%, {frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+    "tooltip-format-disconnected": "Disconnected",
+    "interval": 3,
+    "on-click": "ghostty -e ~/.local/bin/nmtui"
+  },
+
+  "bluetooth": {
+    "format": "󰂯 {num_connections}",
+    "format-on": "󰂯 {num_connections}",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲 {status}",
+    "format-connected": "󰂱 {num_connections}",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "on-click": "ghostty -e ~/.local/bin/bluetui"
+  },
+
+  "pulseaudio#input": {
+    "format": "<span color='#8c1625'>mic</span> {source_volume}%",
+    "format-source-muted": "<span color='#8c1625'>mic</span> muted",
+    "tooltip-format": "mic {source_volume}%",
+    "max-volume": 100,
+    "on-click": "ghostty -e wiremix",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+    "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%+ -l 1.0",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%-"
+  },
+  "pulseaudio#output": {
+    "format": "<span color='#8c1625'>vol</span> {volume}%",
+    "format-muted": "<span color='#8c1625'>vol</span> muted",
+    "tooltip-format": "vol {volume}%",
+    "max-volume": 100,
+    "scroll-step": 2,
+    "on-click": "ghostty -e wiremix",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+  },
+
+  // What's playing in the most recently active MPRIS player (spotify-player, LibreWolf,
+  // mpv...), in red after a play or pause icon: title · artist · [position/length].
+  // scripts/media.sh redraws on every play/pause/track change and ticks the position
+  // each second. Long titles drop the artist, then get cut. Click: play/pause,
+  // right click: next, middle click: previous.
+  "custom/media": {
+    "exec": "~/.config/waybar/scripts/media.sh",
+    "return-type": "json",
+    "on-click": "playerctl -p playerctld play-pause",
+    "on-click-right": "playerctl -p playerctld next",
+    "on-click-middle": "playerctl -p playerctld previous"
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "tooltip-format-activated": "Stay Awake: ON",
+    "tooltip-format-deactivated": "Stay Awake: OFF",
+    "format-icons": { "activated": "󰛨", "deactivated": "󰛩" }
+  },
+
+  "group/tray-expander": {
+    "orientation": "inherit",
+    "drawer": { "transition-duration": 600, "children-class": "tray-group-item" },
+    "modules": ["custom/expand-icon", "tray"]
+  },
+  "custom/expand-icon": { "format": "", "tooltip": false },
+  "tray": { "icon-size": 13, "spacing": 2 }
+}

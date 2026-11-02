@@ -1,0 +1,18 @@
+# Only overrides; everything else uses lazygit's defaults (`lazygit --config`).
+gui:
+  nerdFontsVersion: "3"   # file icons; the font is JetBrainsMono Nerd Font
+  # shin colors: greys + wine red like waybar/rofi.
+  theme:
+    activeBorderColor: ["#cb4d66", bold]
+    inactiveBorderColor: ["#8c1625"]   # also colors the tabs not showing
+    searchingActiveBorderColor: ["#d5909e", bold]
+    optionsTextColor: ["#cb4d66"]
+    selectedLineBgColor: ["#cb4d66"]
+    inactiveViewSelectedLineBgColor: ["#1e1e1e"]
+    selectedLineFgColor: [bold]
+    cherryPickedCommitFgColor: ["#000000"]
+    cherryPickedCommitBgColor: ["#d5909e"]
+    markedBaseCommitFgColor: ["#000000"]
+    markedBaseCommitBgColor: ["#cb4d66"]
+    unstagedChangesColor: ["#cb4d66"]
+    defaultFgColor: ["#e9e9e9"]

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Hotkey cheat sheet in rofi, styled like the rest of the desktop (niri's own
+# overlay can't be styled). Lists every bind in the niri config that has a
+# hotkey-overlay-title, in config order. Shown at login and on Super+Shift+/.
+set -euo pipefail
+
+cfg=${XDG_CONFIG_HOME:-$HOME/.config}/niri/config.kdl
+pkill -x rofi && exit 0   # pressing the hotkey again closes it
+
+pretty() {
+  sed -E 's/\+/ + /g;
+          s/\bMod\b/Super/; s/\bSlash\b/\//; s/\bReturn\b/Enter/;
+          s/\bPage_Down\b/PgDn/; s/\bPage_Up\b/PgUp/; s/\bEscape\b/Esc/;
+          s/\bBracketLeft\b/[/; s/\bBracketRight\b/]/;
+          s/\bLeft\b/←/; s/\bRight\b/→/; s/\bUp\b/↑/; s/\bDown\b/↓/;
+          s/ \+ 1$/ + 1-9/'
+}
+
+mapfile -t rows < <(gawk '
+  /^[[:space:]]*\/\// { next }
+  match($0, /^[[:space:]]*([^[:space:]{]+)[^{]*hotkey-overlay-title="([^"]*)"/, m) { print m[1] "\t" m[2] }
+' "$cfg")
+
+keys=(); titles=(); width=0
+for r in "${rows[@]}"; do
+  k=$(pretty <<< "${r%%$'\t'*}"); t=${r#*$'\t'}
+  keys+=("$k"); titles+=("$t")
+  ((${#k} > width)) && width=${#k}
+done
+
+esc() { sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' <<< "$1"; }
+lines=$(( (${#keys[@]} + 1) / 2 ))
+
+for i in "${!keys[@]}"; do
+  k=${keys[$i]}
+  pad=$(printf '%*s' $((width - ${#k})) '')
+  printf "<span background='#2a2a2a' color='#cb4d66'> %s </span>%s  %s\n" "$(esc "$k")" "$pad" "$(esc "${titles[$i]}")"
+done | rofi -dmenu -markup-rows -no-custom -i -p $'\U000f030c Hotkeys' \
+  -theme-str "* { bg-col: #1e1e1e; bg-col-light: #2a2a2a; }
+              window { width: calc(1260px min 95%); }
+              listview { columns: 2; lines: $lines; flow: vertical; spacing: 2px; }
+              element { padding: 5px 8px; }
+              element selected { background-color: #2a2a2a; text-color: #e9e9e9; }
+              entry { placeholder: \"Search hotkeys...\"; }" >/dev/null || true

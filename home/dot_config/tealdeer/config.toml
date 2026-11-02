@@ -1,0 +1,25 @@
+# tealdeer (tldr): shin palette. Command name in bright wine, descriptions in
+# grey, example commands in white, placeholders underlined in bright wine.
+
+[style.command_name]
+foreground = { rgb = { r = 203, g = 77, b = 102 } }  # #cb4d66
+bold = true
+
+[style.description]
+foreground = { rgb = { r = 152, g = 152, b = 152 } }  # #989898
+
+[style.example_text]
+foreground = { rgb = { r = 207, g = 207, b = 207 } }  # #cfcfcf
+
+[style.example_code]
+foreground = { rgb = { r = 233, g = 233, b = 233 } }  # #e9e9e9
+
+[style.example_variable]
+foreground = { rgb = { r = 203, g = 77, b = 102 } }  # #cb4d66
+underline = true
+
+[updates]
+# Download the pages on first use and refresh monthly, so a fresh install works
+# without running `tldr --update` by hand.
+auto_update = true
+auto_update_interval_hours = 720

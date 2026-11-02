@@ -1,0 +1,13 @@
+#!/bin/sh
+# chezmoi modify script for Claude Code's settings: sets the theme and model effort,
+# and keeps everything else, since Claude Code and herdr's integration write this
+# file too. Credentials, history and memory stay out of the dotfiles.
+in=$(cat)
+[ -n "$in" ] || in='{}'
+if out=$(printf '%s' "$in" | jq --indent 2 '
+  .theme = "dark"
+  | .modelSettings["claude-opus-5-5"].effortLevel = "high"' 2>/dev/null); then
+  printf '%s\n' "$out"
+else
+  printf '%s' "$in"
+fi

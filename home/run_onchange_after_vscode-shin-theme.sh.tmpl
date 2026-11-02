@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Installs the Shin color theme (~/.local/share/vscode-shin-theme) into VS Code.
+# VS Code ignores extension folders copied in after its first start, so this packs
+# the theme as a .vsix and installs that. chezmoi reruns it when the theme changes
+# and once VS Code is installed:
+#   theme {{ include "dot_local/share/vscode-shin-theme/package.json" | sha256sum }}
+#   theme {{ include "dot_local/share/vscode-shin-theme/themes/shin-color-theme.json" | sha256sum }}
+#   code  {{ lookPath "code" }}
+set -euo pipefail
+src=$HOME/.local/share/vscode-shin-theme
+
+if ! command -v code >/dev/null; then
+  echo "vscode: not installed yet; the Shin theme goes in on the next chezmoi apply"
+  exit 0
+fi
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+mkdir "$tmp/extension"
+cp -r "$src/." "$tmp/extension/"
+(cd "$tmp" && bsdtar --format zip -cf shin-theme.vsix extension)
+code --install-extension "$tmp/shin-theme.vsix" --force

@@ -1,0 +1,54 @@
+# Programming toolchains and dev tools.
+
+[arch]
+packages = [
+  # Rust (rustup manages toolchains; install.sh sets stable and adds rust-analyzer)
+  "rustup",
+
+  # Go (fetches the toolchain a project's go.mod asks for by itself)
+  "go",
+
+  # C/C++ builds
+  "cmake",
+  "ninja",
+
+  # Language servers: helix's completion, errors, go-to-definition, rename and
+  # formatting (`hx --health <language>` shows what's found). Rust's, rust-analyzer,
+  # is a rustup component.
+  "ty",                          # Python: types, completion
+  "ruff",                        # Python: lint, format
+  "clang",                       # C, C++, OpenCL (clangd)
+  "gopls",                       # Go
+  "verible-bin",                 # SystemVerilog, Verilog (AUR; set in helix's languages.toml)
+  "jdk21-openjdk",               # Scala: Java LTS for sbt and metals
+  "sbt",                         #   build tool
+  # coursier (AUR) installs metals, the Scala server, into ~/.local/bin
+  # (run_onchange_after_metals.sh)
+  "coursier",
+  "bash-language-server",        # Bash, sh
+  "shellcheck",                  #   (bash-language-server's linter)
+  "marksman",                    # Markdown
+  "harper",                      #   spelling and grammar (harper-ls)
+  "taplo-cli",                   # TOML
+  "vscode-json-languageserver",  # JSON
+  "yaml-language-server",        # YAML
+  "tinymist",                    # Typst (also previews and formats)
+
+  # Typst: documents and slides (`typst watch file.typ`). Local packages live in
+  # ~/.local/share/typst/packages/local.
+  "typst",
+
+  # Debuggers for helix's (experimental) debug mode, Space G
+  "lldb",                        # C, C++, Rust (lldb-dap)
+  "delve",                       # Go
+
+  # VS Code, Microsoft's build (AUR): its marketplace and Remote-SSH. The Shin theme
+  # and extensions come from chezmoi's run_onchange scripts, which wait for VS Code.
+  "visual-studio-code-bin",
+
+  # GitHub from the terminal (gh): repos, pull requests, issues
+  "github-cli",
+
+  # Coding agents. Claude Code and herdr are self-installed instead (see README).
+  "openai-codex",
+]

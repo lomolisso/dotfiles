@@ -1,0 +1,9 @@
+# Graphical applications.
+
+[arch]
+packages = [
+  "librewolf",
+
+  # AUR
+  "vesktop-bin",
+]

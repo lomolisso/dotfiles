@@ -1,0 +1,109 @@
+/* Layout from the Bloody Carmine rofi theme (github.com/AizenVisuals/bloody-carmine-dotfiles),
+   recolored with the shin palette to match waybar: wine border, bright wine
+   highlights, the shin black and greys, waybar's bold JetBrains Mono. */
+
+configuration {
+    /* "apps" is ~/.local/bin/rofi-apps: the launcher with Nerd Font characters
+       instead of app icons (Super+Space). */
+    modi: "apps:{{ .chezmoi.homeDir }}/.local/bin/rofi-apps,run,window";
+    font: "JetBrainsMono Nerd Font Bold 10.5";
+    show-icons: false;
+    terminal: "ghostty";
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    display-run: " Run ";
+    display-window: " Windows ";
+}
+
+@theme "/dev/null"
+
+* {
+    bg-col:       #000000;  /* shin background */
+    bg-col-light: #1e1e1e;  /* search bar */
+    fg-col:       #e9e9e9;  /* shin white */
+    muted-col:    #989898;  /* placeholder */
+    accent-col:   #8c1625;  /* wine, same as the border (was #cb4d66, waybar's hover red) */
+    border-col:   #8c1625;  /* wine: waybar border */
+
+    background-color: @bg-col;
+    text-color: @fg-col;
+    margin: 0;
+    padding: 0;
+    spacing: 0;
+}
+
+window {
+    background-color: @bg-col;
+    location: center;
+    anchor: center;
+    width: 500px;
+    border: 1px;
+    border-color: @border-col;
+    border-radius: 5px;
+}
+
+mainbox {
+    background-color: @bg-col;
+    children: [ inputbar, listview ];
+    spacing: 10px;
+    padding: 20px;
+}
+
+inputbar {
+    children: [ prompt, entry ];
+    background-color: @bg-col-light;
+    border-radius: 8px;
+    padding: 10px;
+    spacing: 10px;
+}
+
+prompt {
+    background-color: @bg-col-light;
+    text-color: @accent-col;
+    border-radius: 8px;
+    padding: 0 10px 0 0;
+}
+
+entry {
+    background-color: @bg-col-light;
+    text-color: @fg-col;
+    border-radius: 8px;
+    padding: 0 0 0 10px;
+    placeholder: "Search...";
+    placeholder-color: @muted-col;
+}
+
+listview {
+    background-color: @bg-col;
+    columns: 1;
+    lines: 8;
+    spacing: 5px;
+    border-radius: 8px;
+}
+
+element {
+    background-color: @bg-col;
+    text-color: @fg-col;
+    border-radius: 8px;
+    padding: 8px;
+    spacing: 10px;
+}
+
+element selected {
+    background-color: @accent-col;
+    text-color: @fg-col;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element-icon {
+    background-color: inherit;
+    text-color: inherit;
+    size: 24px;
+    vertical-align: 0.5;
+}

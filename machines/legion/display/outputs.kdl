@@ -1,0 +1,5 @@
+// MSI MAG 272Q X24, matched by make/model/serial so it follows the monitor
+// across ports. Runs at its max refresh rate (niri defaults to 60 Hz here).
+output "Micro-Star Int'l Co., Ltd. MAG 272Q X24 0x01010101" {
+    mode "2560x1440@239.970"
+}

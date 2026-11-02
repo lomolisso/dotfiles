@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- The new tab and home page: a terminal pane showing fastfetch and ls, then a
+     prompt. Links are in start.js. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>~/start</title>
+<link rel="stylesheet" href="start.css">
+</head>
+<body>
+<main class="pane">
+  <span class="pane-title">~/start</span>
+  <span class="pane-clock" id="pane-clock"></span>
+
+  <p class="cmd"><span class="prompt">❯</span> fastfetch</p>
+  <section class="fetch">
+    <!-- Shin's heart mask, ~/.config/fastfetch/logo/shin.txt -->
+    <pre class="logo" aria-hidden="true">
+                  y
+             ,  _4@$y@@@
+            @@y$@@@P$@Z^
+           ay0$$@B@@g@~~   yggyaL
+          .@@@$@=f~~$yuyygW@@`~`_, _
+     a@_ g@`$f     yy?@y5@aR@ @@5$ @_
+    4B@@@@@W@     _@@$4Fa7@2$ @@@@ g7
+     `%$@@@@$_  -$@@@@$T4@@#FaB@@@L@@g
+    aPz@@W@@@@Fg_@D@@@@@g@PD$$@@WgFy@~
+    ?5@RM@@$$@s@HW@1@@0@@@$yB@s$$Fya _
+  `@$4@g@$@@@@@$$RB@@@@@@@$@@@g@__yaM@
+  f=@$@%@@@@@@RD@@g$@@@@$@MW@M@$$@@$F`
+     @@a@@@E4@$5@@@@F@@P$g@@@@@@g$@
+     4@$$@$j@$s@gMg@g$@@$@@@@@@$@@$
+     4@@y$aB@@M@@$$@@$$4@@@Fg@ga@D$
+    ag@@@@     `~$@@@$@@F ` ~~`@$$l
+    ~4@$@@L_    _4@@@@@_     _j@P@@
+      ~L9@P@ $g,2@@@@@@@g_g,y@@@$=~
+       $$@@@@@@y@@M@@@@@@@@$@$$@F
+       4@M@@@@M@@@@$@$3MB@@@g@@yr
+        @A$0@@@@@@$=@@$a$$@@@W@@
+        #$@W$$@@$@@F4@N@@@@@$@$@,
+        `R@$@@@@@@@yL9$@@@@@By@~
+          `~7@@@$@W@@ $M@@@Kf~
+              ~4@@ &gt;ZF$@F~`
+                 ~    "</pre>
+    <div class="info">
+      <h1><span class="key">{{ .chezmoi.username }}</span>@<span class="key">{{ .chezmoi.hostname }}</span></h1>
+      <div class="rule"></div>
+      <dl>
+        <dt>browser</dt><dd id="browser">LibreWolf</dd>
+        <dt>time</dt><dd id="time"></dd>
+        <dt>date</dt><dd id="date"></dd>
+        <dt>week</dt><dd id="week"></dd>
+        <dt>search</dt><dd id="engine"></dd>
+      </dl>
+      <div class="colors" aria-hidden="true">
+        <span style="background:#000000"></span><span style="background:#1e1e1e"></span><span style="background:#2a2a2a"></span><span style="background:#393939"></span><span style="background:#5c5c5c"></span><span style="background:#989898"></span><span style="background:#cfcfcf"></span><span style="background:#e9e9e9"></span>
+      </div>
+      <div class="colors" aria-hidden="true">
+        <span style="background:#750017"></span><span style="background:#8c1625"></span><span style="background:#a8304a"></span><span style="background:#cb4d66"></span><span style="background:#d5909e"></span>
+      </div>
+    </div>
+  </section>
+
+  <p class="cmd"><span class="prompt">❯</span> ls ~/links</p>
+  <nav class="ls" id="links"></nav>
+
+  <form class="cmdline" id="cmdline">
+    <label for="q"><span class="cwd">~</span> <span class="prompt">❯</span></label>
+    <input id="q" autocomplete="off" spellcheck="false" autofocus>
+  </form>
+  <p class="status" id="status"></p>
+</main>
+<script src="start.js"></script>
+</body>
+</html>

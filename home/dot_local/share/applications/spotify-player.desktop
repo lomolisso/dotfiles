@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Spotify
+GenericName=Spotify client (spotify-player)
+Comment=Spotify in the terminal
+Exec=spotify_player
+Terminal=true
+Icon=spotify
+Categories=AudioVideo;Audio;Music;Player;

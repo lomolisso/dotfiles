@@ -1,0 +1,28 @@
+# mako notifications, shin palette (matches waybar/rofi): #000000 background,
+# #e9e9e9 text, 1px #8c1625 border, 5px corners. Top-right, 16px from the
+# screen edge and below waybar, the same gap niri leaves around windows.
+
+font=JetBrainsMono Nerd Font 10.5
+background-color=#000000
+text-color=#e9e9e9
+border-size=1
+border-color=#8c1625
+border-radius=5
+progress-color=over #8c1625
+
+anchor=top-right
+margin=16
+padding=12
+width=380
+max-icon-size=48
+icon-location=left
+
+default-timeout=5000
+max-visible=5
+
+[urgency=low]
+text-color=#cfcfcf
+
+[urgency=high]
+border-color=#cb4d66
+default-timeout=0

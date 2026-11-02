@@ -1,0 +1,5 @@
+#!/bin/sh
+# chezmoi modify script for Vencord's settings: enables the system24 (shin)
+# theme (themes/system24-shin.theme.css) and keeps every other setting as is.
+exec jq --indent 4 -n '((try input catch {}) // {})
+  | .enabledThemes = (((.enabledThemes // []) + ["system24-shin.theme.css"]) | unique)'

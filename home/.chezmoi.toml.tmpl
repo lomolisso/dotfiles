@@ -1,0 +1,7 @@
+# Keeps chezmoi pointed at ~/dotfiles after `chezmoi init --source ~/dotfiles`.
+sourceDir = {{ .chezmoi.sourceDir | quote }}
+
+[data]
+# Bitwarden account email for rbw. Asked once by `chezmoi init` and kept only in
+# ~/.config/chezmoi/chezmoi.toml, so it never lands in this repo.
+bitwarden_email = {{ promptStringOnce . "bitwarden_email" "Bitwarden account email (empty to skip)" | quote }}
